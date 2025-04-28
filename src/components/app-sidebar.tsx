@@ -1,0 +1,125 @@
+import {
+    ClipboardListIcon,
+    HelpCircleIcon,
+    LayoutDashboardIcon,
+    MapPinCheck,
+    MessageCircle,
+    SearchIcon,
+    SettingsIcon,
+    Store,
+    User
+} from "lucide-react"
+import type * as React from "react"
+import { Link } from "react-router-dom"
+import { NavUser } from "./nav-user"
+import { NavMain } from "./nav.main"
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar"
+
+const data = {
+    user: {
+        name: "Dominic Vega",
+        email: "dominic@example.com",
+        avatar: "/avatars/shadcn.jpg",
+    },
+    navGroups: [
+        {
+            label: "Main",
+            items: [
+                {
+                    title: "Dashboard",
+                    url: "/",
+                    icon: LayoutDashboardIcon,
+                },
+                {
+                    title: "Florists",
+                    url: "/florists",
+                    icon: Store,
+                },
+                {
+                    title: "Responses",
+                    url: "#",
+                    icon: MessageCircle,
+                },
+            ],
+        },
+        {
+            label: "Inventory",
+            items: [
+                {
+                    title: "Towns",
+                    url: "/towns",
+                    icon: MapPinCheck,
+                },
+                {
+                    title: "Provinces",
+                    url: "/provinces",
+                    icon: MapPinCheck,
+                },
+                {
+                    title: "Statuses",
+                    url: "/statuses",
+                    icon: MapPinCheck,
+                },
+            ],
+        },
+        {
+            label: "Management",
+            items: [
+                {
+                    title: "Users",
+                    url: "/users",
+                    icon: User,
+                },
+                {
+                    title: "Reports",
+                    url: "#",
+                    icon: ClipboardListIcon,
+                },
+            ],
+        },
+        {
+            label: "Support",
+            items: [
+                {
+                    title: "Settings",
+                    url: "#",
+                    icon: SettingsIcon,
+                },
+                {
+                    title: "Get Help",
+                    url: "#",
+                    icon: HelpCircleIcon,
+                },
+                {
+                    title: "Search",
+                    url: "#",
+                    icon: SearchIcon,
+                },
+            ],
+        },
+    ],
+}
+
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+    return (
+        <Sidebar collapsible="offcanvas" {...props}>
+            <SidebarHeader>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
+                            <Link to="/">
+                                <span className="text-base font-semibold">🌸 Florist Portal</span>
+                            </Link>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarHeader>
+            <SidebarContent>
+                <NavMain groups={data.navGroups} />
+            </SidebarContent>
+            <SidebarFooter>
+                <NavUser user={data.user} />
+            </SidebarFooter>
+        </Sidebar>
+    )
+}
