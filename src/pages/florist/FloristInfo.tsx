@@ -23,7 +23,7 @@ const FloristInfo = () => {
   const [preferredCommunicationField] = useField("preferred_communication");
   const [memberOfOtherNetworksField] = useField("member_of_other_networks");
   const [flowerSupplierField] = useField("flower_supplier");
-  const [interestedFreeWebsiteField] = useField("interested_free_website");
+  const [interestedFreeWebsiteField] = useField("interested_in_free_website");
   const [discountOfferField] = useField("discount_offer");
   const [additionalInfoField] = useField("additional_info");
 
@@ -97,7 +97,7 @@ const FloristInfo = () => {
         <Label>Interested in Free Website?</Label>
         <Select
           onValueChange={(value) =>
-            setFieldValue("interested_free_website", value)
+            setFieldValue("interested_in_free_website", value)
           }
           value={interestedFreeWebsiteField.value}
         >

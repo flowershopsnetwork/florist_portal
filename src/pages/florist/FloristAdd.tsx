@@ -1,3 +1,4 @@
+import { createFlorist, fetchFloristById, updateFlorist } from "@/api/services/floristService";
 import {
   Button,
   Tabs,
@@ -7,17 +8,19 @@ import {
 } from "@/ComponentModule";
 import { Form, Formik } from "formik";
 import { ArrowLeft, Save } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
 import * as Yup from "yup";
 import FloristDetails from "./FloristDetails";
 import FloristInfo from "./FloristInfo";
 import FloristProducts from "./FloristProducts";
-import { createFlorist } from "@/api/services/floristService";
-import { toast } from "sonner";
 
 const FloristAdd = () => {
   const navigate = useNavigate();
-  const initialValues = {
+  const { id } = useParams(); 
+  const floristId = Number(id);
+  const [initialValues, setInitialValues] = useState({
     floristname: "",
     contactnumber: "",
     address: "",
@@ -39,13 +42,13 @@ const FloristAdd = () => {
     preferred_communication: "",
     member_of_other_networks: "",
     flower_supplier: "",
-    interested_free_website: "",
-    discout_offer: "",
+    interested_in_free_website: "",
+    discount_offer: "",
     additional_info: "",
     page_title: "",
     meta_description: "",
     description: "",
-  };
+  });
 
   const validationSchema = Yup.object({
     floristname: Yup.string().required("Florist name is required"),
@@ -59,33 +62,62 @@ const FloristAdd = () => {
     call_outcome: Yup.string().required("Call outcome is required"),
   });
 
+  useEffect(() => {
+    if (id) {
+      (async () => {
+        try {
+          const res = await fetchFloristById(floristId);
+          const sanitized = {
+            ...initialValues,
+            ...Object.fromEntries(
+              Object.entries(res.data).map(([key, value]) => [
+                key,
+                value ?? "",
+              ])
+            ),
+          };
+          setInitialValues(sanitized);
+          console.log(sanitized)
+        } catch (error) {
+          console.error(error);
+          toast.error("Failed to fetch florist data.", {
+            style: { backgroundColor: "#dc3545", color: "#fff" },
+          });
+        }
+      })();
+    }
+  }, [id]);
+  
+
   const handleSubmit = async (
     values: typeof initialValues,
     { resetForm }: any
   ) => {
     try {
-      const res = await createFlorist(values);
-      toast.success(res.data.message, {
-        style: {
-          backgroundColor: "#28a745",
-          color: "#fff",
-        },
-      });
-      navigate("/florists");
+      if (id) {
+        const res = await updateFlorist(floristId, values);
+        toast.success(res.data.message, {
+          style: { backgroundColor: "#28a745", color: "#fff" },
+        });
+      } else {
+        const res = await createFlorist(values);
+        toast.success(res.data.message, {
+          style: { backgroundColor: "#28a745", color: "#fff" },
+        });
+      }
       resetForm();
+      navigate("/florists");
     } catch (error) {
       console.error(error);
-      toast.error("Failed to add florist. Please try again.", {
-        style: {
-          backgroundColor: "#dc3545",
-          color: "#fff",
-        },
+      toast.error("Failed to save florist. Please try again.", {
+        style: { backgroundColor: "#dc3545", color: "#fff" },
       });
     }
   };
 
   return (
     <Formik
+      enableReinitialize 
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
@@ -102,15 +134,12 @@ const FloristAdd = () => {
               </Link>
               <Button
                 type="button"
-                onClick={async () => {
-                  formik.handleSubmit();
-                }}
+                onClick={() => formik.submitForm()}
               >
                 <Save />
                 Save
               </Button>
             </div>
-
             <Tabs defaultValue="detail">
               <TabsList className="grid grid-cols-3 w-full md:w-[600px]">
                 <TabsTrigger value="detail">Basic</TabsTrigger>

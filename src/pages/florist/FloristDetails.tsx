@@ -331,8 +331,8 @@ const FloristDetails = () => {
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Select</SelectLabel>
-                  <SelectItem value="Yes">Yes</SelectItem>
-                  <SelectItem value="No">No</SelectItem>
+                  <SelectItem value="1">Yes</SelectItem>
+                  <SelectItem value="2">No</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
