@@ -36,15 +36,15 @@ const FloristDetails = () => {
   const [cityField, cityMeta] = useField("city");
   const [provinceField, provinceMeta] = useField("province");
   const [postcodeField, postcodeMeta] = useField("postcode");
-  const [websiteField, websiteMeta] = useField("website");
-  const [socialMediaField, socialMediaMeta] = useField("socialmedia");
-  const [collectionField, collectionMeta] = useField("collection");
+  const [websiteField] = useField("website");
+  const [socialMediaField] = useField("socialmedia");
+  const [collectionField] = useField("collection");
   const [floristRepField, floristRepMeta] = useField("floristrep");
   const [statusField, statusMeta] = useField("status");
-  const [shopifyGidField, shopifyGidMeta] = useField("shopifygid");
-  const [pageTitleField, pageTitleMeta] = useField("page_title");
-  const [metaDescriptionField, metaDescriptionMeta] = useField("meta_description");
-  const [descriptionField, descriptionMeta] = useField("description");
+  const [shopifyGidField] = useField("shopifygid");
+  const [pageTitleField] = useField("page_title");
+  const [metaDescriptionField] = useField("meta_description");
+  const [descriptionField] = useField("description");
 
   useEffect(() => {
     const fetchStatus = async () => {

@@ -15,17 +15,17 @@ import { ErrorMessage, useField, useFormikContext } from "formik";
 const FloristInfo = () => {
   const { setFieldValue } = useFormikContext();
   const [callOutcomeField, callOutcomeMeta] = useField("call_outcome");
-  const [productPriceField, productPriceMeta] = useField("product_price");
-  const [productTypeField, productTypeMeta] = useField("product_type");
-  const [deliveryFeeField, deliveryFeeMeta] = useField("delivery_fee");
-  const [sellExtrasField, sellExtrasMeta] = useField("sell_extras");
-  const [popularityTrendField, popularityTrendMeta] = useField("popularity_trend");
-  const [preferredCommunicationField, preferredCommunicationMeta] = useField("preferred_communication");
-  const [memberOfOtherNetworksField, memberOfOtherNetworksMeta] = useField("member_of_other_networks");
-  const [flowerSupplierField, flowerSupplierMeta] = useField("flower_supplier");
-  const [interestedFreeWebsiteField, interestedFreeWebsiteMeta] = useField("interested_free_website");
-  const [discountOfferField, discountOfferMeta] = useField("discount_offer");
-  const [additionalInfoField, additionalInfoMeta] = useField("additional_info");
+  const [productPriceField] = useField("product_price");
+  const [productTypeField] = useField("product_type");
+  const [deliveryFeeField] = useField("delivery_fee");
+  const [sellExtrasField] = useField("sell_extras");
+  const [popularityTrendField] = useField("popularity_trend");
+  const [preferredCommunicationField] = useField("preferred_communication");
+  const [memberOfOtherNetworksField] = useField("member_of_other_networks");
+  const [flowerSupplierField] = useField("flower_supplier");
+  const [interestedFreeWebsiteField] = useField("interested_free_website");
+  const [discountOfferField] = useField("discount_offer");
+  const [additionalInfoField] = useField("additional_info");
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
