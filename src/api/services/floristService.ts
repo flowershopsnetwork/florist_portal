@@ -1,6 +1,6 @@
 import { Florist } from "@/shared/interfaces/florist.interface";
 import { PaginatedResponse } from "@/shared/interfaces/list.interface";
-import { GET, POST, PUT } from "../restRequest";
+import { DELETE, GET, POST, PUT } from "../restRequest";
 
 interface FloristParams {
     page?: number;
@@ -46,4 +46,8 @@ export const fetchFloristById = (id: number) => {
 
 export const updateFlorist = (id: number, data: Partial<Florist>) => {
     return PUT(`/florists/${id}`, data);
+};
+
+export const deleteFlorist = (id: number) => {
+    return DELETE(`/florists/${id}`);
 };

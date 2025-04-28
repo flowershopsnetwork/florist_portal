@@ -35,32 +35,34 @@ const FloristList = () => {
     const [statusOptions, setStatusOptions] = useState<{ label: string; value: string }[]>([])
     const [floristRepOptions, setFloristRepOptions] = useState<{ label: string; value: string }[]>([]) 
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const sortField = sorting[0]?.id
-            const order = sorting[0]?.desc ? "desc" : "asc"
-
-            try {
-                const res = await fetchFlorists({
-                    page: pageIndex,
-                    per_page: pageSize,
-                    sort: sortField,
-                    order: sorting.length > 0 ? order : undefined,
-                    search: debouncedSearchValue,
-                    city: filterValues.city,
-                    province: filterValues.province,
-                    status: filterValues.status,
-                    floristrep: filterValues.floristrep
-                })
-                setData(res.data)
-                setTotal(res.total ?? res.data.length)
-            } catch (error) {
-                console.error("Failed to fetch florists:", error)
-            }
+    const fetchData = async () => {
+        const sortField = sorting[0]?.id
+        const order = sorting[0]?.desc ? "desc" : "asc"
+    
+        try {
+            const res = await fetchFlorists({
+                page: pageIndex,
+                per_page: pageSize,
+                sort: sortField,
+                order: sorting.length > 0 ? order : undefined,
+                search: debouncedSearchValue,
+                city: filterValues.city,
+                province: filterValues.province,
+                status: filterValues.status,
+                floristrep: filterValues.floristrep
+            })
+            setData(res.data)
+            setTotal(res.total ?? res.data.length)
+        } catch (error) {
+            console.error("Failed to fetch florists:", error)
         }
-
+    }
+    
+    useEffect(() => {
         fetchData()
-    }, [pageIndex, pageSize, sorting, debouncedSearchValue, filterValues])
+    }, [pageIndex, pageSize, sorting, debouncedSearchValue, filterValues])   
+
+    const columns = floristColumn(fetchData) 
 
     useEffect(() => {
         const fetchFilters = async () => {
@@ -190,7 +192,7 @@ const FloristList = () => {
             </div>
 
             <DataTable
-                columns={floristColumn}
+                columns={columns}
                 data={data}
                 total={total}
                 pageIndex={pageIndex}

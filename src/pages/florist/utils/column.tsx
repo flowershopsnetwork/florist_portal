@@ -1,13 +1,11 @@
 import { API_CONFIG } from "@/api/apiConfig"
+import { Avatar, AvatarFallback, AvatarImage, Badge, Checkbox } from "@/ComponentModule"
 import { DataTableColumnHeader } from "@/components/table/data-table-column-header"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Florist } from "@/shared/interfaces/florist.interface"
 import type { ColumnDef } from "@tanstack/react-table"
 import { FloristRowActions } from "./row-actions"
 
-export const floristColumn: ColumnDef<Florist>[] = [
+export const floristColumn = (refetchFlorists: () => void): ColumnDef<Florist>[] => [
     {
         id: "select",
         header: ({ table }) => (
@@ -124,6 +122,6 @@ export const floristColumn: ColumnDef<Florist>[] = [
     {
         id: "actions",
         header: ({ column }) => <DataTableColumnHeader column={column} title="Actions" />,
-        cell: ({ row }) => <FloristRowActions row={row} />,
-    },
+        cell: ({ row }) => <FloristRowActions row={row} refetchFlorists={refetchFlorists} />,
+    }
 ]

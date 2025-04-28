@@ -12,3 +12,12 @@ export {
 } from "@/components/ui/select";
 export { Textarea } from "@/components/ui/textarea";
 export { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+export { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+export { Badge } from "@/components/ui/badge"
+export { Checkbox } from "@/components/ui/checkbox"
+export {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
