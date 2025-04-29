@@ -1,8 +1,9 @@
 export interface User {
-    id: string;
+    id?: string;
     username?: string;
-    role?: number;
+    role?: string;
     password?: string;
+    password_confirmation?: string;
     can_login?: boolean;
     locked?: boolean;
 }

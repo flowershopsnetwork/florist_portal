@@ -1,11 +1,10 @@
+import { Badge, Checkbox } from "@/ComponentModule"
 import { DataTableColumnHeader } from "@/components/table/data-table-column-header"
-import { Badge } from "@/components/ui/badge"
-import { Checkbox } from "@/components/ui/checkbox"
+import { User } from "@/shared/interfaces/user.interface"
 import type { ColumnDef } from "@tanstack/react-table"
 import { UserRowActions } from "./row-actions"
-import { User } from "./data"
 
-export const UserColumns: ColumnDef<User>[] = [
+export const userColumn = (refetchUsers: () => void): ColumnDef<User>[] => [
     {
         id: "select",
         header: ({ table }) => (
@@ -26,51 +25,41 @@ export const UserColumns: ColumnDef<User>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "id",
-        header: ({ column }) => <DataTableColumnHeader column={column} title="ID" />,
-        enableHiding: false,
+        accessorKey: "username",
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Username" />,
     },
     {
-        accessorKey: "name",
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
-    },
-    {
-        accessorKey: "email",
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
-    },
-    {
-        accessorKey: "role",
+        accessorKey: "role_name",
         header: ({ column }) => <DataTableColumnHeader column={column} title="Role" />,
-        filterFn: (row, id, value) => {
-            return value.includes(row.getValue(id))
-        },
+        enableSorting: false,
     },
     {
-        accessorKey: "status",
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
+        accessorKey: "can_login",
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Can Login" />,         
         cell: ({ row }) => {
-            const status = row.getValue("status") as string
-
+            const canLogin = row.original.can_login 
             return (
-                <Badge variant={status === "active" ? "default" : status === "pending" ? "outline" : "secondary"}>
-                    {status}
+                <Badge variant={canLogin === false ? "default" : canLogin === true ? "success" : "secondary"} className="text-white">
+                    {canLogin === true ? 'Yes' : 'No'}
                 </Badge>
             )
         },
-        filterFn: (row, id, value) => {
-            return value.includes(row.getValue(id))
-        },
     },
     {
-        accessorKey: "lastActive",
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Last Active" />,
+        accessorKey: "locked",
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Locked" />,         
         cell: ({ row }) => {
-            const date = new Date(row.getValue("lastActive"))
-            return <div>{date.toLocaleDateString()}</div>
+            const isLocked = row.original.locked 
+            return (
+                <Badge variant={isLocked === false ? "default" : isLocked === true ? "success" : "secondary"} className="text-white">
+                    {isLocked === true ? 'Yes' : 'No'}
+                </Badge>
+            )
         },
     },
     {
         id: "actions",
-        cell: ({ row }) => <UserRowActions row={row} />,
-    },
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Actions" />,
+        cell: ({ row }) => <UserRowActions row={row} refetchUsers={refetchUsers} />,
+    }
 ]

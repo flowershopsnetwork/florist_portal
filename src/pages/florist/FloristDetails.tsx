@@ -411,7 +411,7 @@ const FloristDetails = () => {
                 <SelectGroup>
                   <SelectLabel>Select</SelectLabel>
                   {floristRep.map((item) => (
-                    <SelectItem key={item.id} value={item.id.toString()}>
+                    <SelectItem key={item.id} value={item.id!.toString()}>
                       {item.username}
                     </SelectItem>
                   ))}

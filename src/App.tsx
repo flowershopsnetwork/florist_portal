@@ -13,6 +13,7 @@ import PrivateRoute from "./shared/PrivateRoute";
 import NotFound from "./components/not-found";
 import TownList from "./pages/town/TownList";
 import TownAdd from "./pages/town/TownAdd";
+import UserAdd from "./pages/user/UserAdd";
 
 function App() {
 
@@ -42,13 +43,12 @@ function App() {
               <Route path="create" element={<TownAdd />} />
               <Route path="edit/:id" element={<TownAdd />} />
             </Route>
-
-            <Route
-              path="/users"
-              element={
-                <UserList />
-              }
-            />
+            {/* User Page */}
+            <Route path="/users">
+              <Route index element={<UserList />} />
+              <Route path="create" element={<UserAdd />} />
+              <Route path="edit/:id" element={<UserAdd />} />
+            </Route>
           </Route>
         </Route>
 
