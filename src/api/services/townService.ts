@@ -1,6 +1,6 @@
 import { PaginatedResponse } from "@/shared/interfaces/list.interface";
 import { Town } from "@/shared/interfaces/town.interface";
-import { GET } from "../restRequest";
+import { DELETE, GET, POST, PUT } from "../restRequest";
 
 interface TownParams {
     page?: number;
@@ -27,3 +27,20 @@ export const fetchTowns = (
         }
     );
 };
+
+export const createTown = (data: Town) => {
+    return POST(`/towns`, data);
+};
+
+export const fetchTownById = (id: number) => {
+    return GET(`/towns/${id}`);
+};
+
+export const updateTown = (id: number, data: Partial<Town>) => {
+    return PUT(`/towns/${id}`, data);
+};
+
+export const deleteTown = (id: number) => {
+    return DELETE(`/towns/${id}`);
+};
+

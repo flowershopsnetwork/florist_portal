@@ -11,6 +11,8 @@ import FloristList from "./pages/florist/FloristList";
 import UserList from "./pages/user/UserList";
 import PrivateRoute from "./shared/PrivateRoute";
 import NotFound from "./components/not-found";
+import TownList from "./pages/town/TownList";
+import TownAdd from "./pages/town/TownAdd";
 
 function App() {
 
@@ -33,6 +35,12 @@ function App() {
               <Route index element={<FloristList />} />
               <Route path="create" element={<FloristAdd />} />
               <Route path="edit/:id" element={<FloristAdd />} />
+            </Route>
+            {/* Town Page */}
+            <Route path="/towns">
+              <Route index element={<TownList />} />
+              <Route path="create" element={<TownAdd />} />
+              <Route path="edit/:id" element={<TownAdd />} />
             </Route>
 
             <Route

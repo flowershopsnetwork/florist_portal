@@ -162,7 +162,7 @@ const FloristDetails = () => {
   }, []);
 
   const filteredCities = cities.filter((city) =>
-    city.name.toLowerCase().includes(searchCity.toLowerCase())
+    city.name?.toLowerCase().includes(searchCity.toLowerCase())
   );
 
   const filteredProvinces = provinces.filter((province) =>
@@ -250,11 +250,13 @@ const FloristDetails = () => {
                 <SelectGroup>
                   <SelectLabel>Select</SelectLabel>
                   {filteredCities.length > 0 ? (
-                    filteredCities.map((item) => (
-                      <SelectItem key={item.id} value={item.id.toString()}>
-                        {item.name}
-                      </SelectItem>
-                    ))
+                    filteredCities
+                      .filter((item) => item.id !== undefined)
+                      .map((item) => (
+                        <SelectItem key={item.id} value={item.id!.toString()}>
+                          {item.name}
+                        </SelectItem>
+                      ))
                   ) : (
                     <SelectItem value="No cities found" disabled>
                       No cities found
