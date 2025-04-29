@@ -48,6 +48,7 @@ const FloristAdd = () => {
     page_title: "",
     meta_description: "",
     description: "",
+    accredition_status: "",
   });
 
   const validationSchema = Yup.object({

@@ -1,3 +1,5 @@
+import { fetchAccreditionStatuses } from "@/api/services/accreditionStatusService";
+import { fetchCollections } from "@/api/services/collectionService";
 import { fetchProvinces } from "@/api/services/provinceService";
 import { fetchStatuses } from "@/api/services/statusService";
 import { fetchTowns } from "@/api/services/townService";
@@ -14,6 +16,8 @@ import {
   SelectValue,
   Textarea,
 } from "@/ComponentModule";
+import { AccreditionStatus } from "@/shared/interfaces/accredition-status.interface";
+import { Collection } from "@/shared/interfaces/collection.interface";
 import { Province } from "@/shared/interfaces/province.interface";
 import { Status } from "@/shared/interfaces/status.interface";
 import { Town } from "@/shared/interfaces/town.interface";
@@ -27,8 +31,10 @@ const FloristDetails = () => {
   const [floristRep, setFloristRep] = useState<User[]>([]);
   const [cities, setCities] = useState<Town[]>([]);
   const [provinces, setProvinces] = useState<Province[]>([]);
-  const [searchCity, setSearchCity] = useState("");
-  const [searchProvince, setSearchProvince] = useState("");
+  const [accreditions, setAccreditions] = useState<AccreditionStatus[]>([]);
+  const [collections, setCollections] = useState<Collection[]>([]);
+  const [searchCity, setSearchCity] = useState<string>("");
+  const [searchProvince, setSearchProvince] = useState<string>("");
 
   const [floristNameField, floristNameMeta] = useField("floristname");
   const [contactNumberField, contactNumberMeta] = useField("contactnumber");
@@ -45,6 +51,7 @@ const FloristDetails = () => {
   const [pageTitleField] = useField("page_title");
   const [metaDescriptionField] = useField("meta_description");
   const [descriptionField] = useField("description");
+  const [accreditionStatusField] = useField("accredition_status");
 
   useEffect(() => {
     const fetchStatus = async () => {
@@ -111,6 +118,42 @@ const FloristDetails = () => {
           search: "",
         });
         setProvinces(res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetchAccreditionStatuses({
+          page: 0,
+          per_page: 1000,
+          sort: "id",
+          order: "asc",
+          search: "",
+        });
+        setAccreditions(res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetchCollections({
+          page: 0,
+          per_page: 10000,
+          sort: "id",
+          order: "asc",
+          search: "",
+        });
+        setCollections(res.data);
       } catch (error) {
         console.error(error);
       }
@@ -331,8 +374,11 @@ const FloristDetails = () => {
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Select</SelectLabel>
-                  <SelectItem value="1">Yes</SelectItem>
-                  <SelectItem value="2">No</SelectItem>
+                  {collections.map((item) => (
+                    <SelectItem key={item.id} value={item.id.toString()}>
+                      {item.title}
+                    </SelectItem>
+                  ))}
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -398,6 +444,32 @@ const FloristDetails = () => {
                   {status.map((item) => (
                     <SelectItem key={item.id} value={item.id.toString()}>
                       {item.statusname}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            <ErrorMessage
+              name="status"
+              component="p"
+              className="text-red-500 text-sm mt-1 italic"
+            />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor="accredition_status">Accredited Status</Label>
+            <Select
+              onValueChange={(value) => setFieldValue("accredition_status", value)}
+              value={accreditionStatusField.value}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Accredited Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Select</SelectLabel>
+                  {accreditions.map((item) => (
+                    <SelectItem key={item.id} value={item.id.toString()}>
+                      {item.status}
                     </SelectItem>
                   ))}
                 </SelectGroup>
