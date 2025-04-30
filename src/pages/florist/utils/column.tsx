@@ -1,4 +1,4 @@
-import { API_CONFIG } from "@/api/apiConfig";
+import { GET } from "@/api/restRequest";
 import {
   Avatar,
   AvatarFallback,
@@ -9,9 +9,8 @@ import {
 import { DataTableColumnHeader } from "@/components/table/data-table-column-header";
 import { Florist } from "@/shared/interfaces/florist.interface";
 import type { ColumnDef } from "@tanstack/react-table";
-import { FloristRowActions } from "./row-actions";
 import { useEffect, useState } from "react";
-import { GET } from "@/api/restRequest";
+import { FloristRowActions } from "./row-actions";
 
 export const floristColumn = (
   refetchFlorists: () => void
