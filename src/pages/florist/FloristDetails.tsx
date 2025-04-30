@@ -477,11 +477,6 @@ const FloristDetails = () => {
                 </SelectGroup>
               </SelectContent>
             </Select>
-            <ErrorMessage
-              name="status"
-              component="p"
-              className="text-red-500 text-sm mt-1 italic"
-            />
           </div>
           <div className="space-y-1">
             <Label htmlFor="shopifygid">Shopify ID</Label>

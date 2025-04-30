@@ -31,4 +31,5 @@ export interface Florist {
     floristrep_name?: string | null;
     status_name?: string | null;
     floristrep?: string | null;
+    photo_url?: File | null;
 };

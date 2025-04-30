@@ -15,11 +15,13 @@ import * as Yup from "yup";
 import FloristDetails from "./FloristDetails";
 import FloristInfo from "./FloristInfo";
 import FloristProducts from "./FloristProducts";
+import FloristPhoto from "./FloristPhoto";
 
 const FloristAdd = () => {
   const navigate = useNavigate();
   const { id } = useParams(); 
-  const floristId = Number(id);
+  const floristId = Number(id);  
+
   const [initialValues, setInitialValues] = useState({
     floristname: "",
     contactnumber: "",
@@ -64,7 +66,7 @@ const FloristAdd = () => {
   });
 
   useEffect(() => {
-    if (id) {
+    if (id && !isNaN(floristId)) {  
       (async () => {
         try {
           const res = await fetchFloristById(floristId);
@@ -93,7 +95,7 @@ const FloristAdd = () => {
     { resetForm }: any
   ) => {
     try {
-      if (id) {
+      if (id && !isNaN(floristId)) {
         const res = await updateFlorist(floristId, values);
         toast.success(res.data.message, {
           style: { backgroundColor: "#28a745", color: "#fff" },
@@ -140,10 +142,15 @@ const FloristAdd = () => {
               </Button>
             </div>
             <Tabs defaultValue="detail">
-              <TabsList className="grid grid-cols-3 w-full md:w-[600px]">
+              <TabsList className={`grid ${floristId ? 'grid-cols-4' : 'grid-cols-2'} w-full md:w-[600px]`}>
                 <TabsTrigger value="detail">Basic</TabsTrigger>
                 <TabsTrigger value="info">Marketing Info</TabsTrigger>
-                <TabsTrigger value="product">Products</TabsTrigger>
+                {!isNaN(floristId) && floristId && (
+                  <>
+                    <TabsTrigger value="photo">Photo</TabsTrigger>
+                    <TabsTrigger value="product">Products</TabsTrigger>
+                  </>
+                )}
               </TabsList>
               <TabsContent value="detail">
                 <FloristDetails />
@@ -151,9 +158,16 @@ const FloristAdd = () => {
               <TabsContent value="info">
                 <FloristInfo />
               </TabsContent>
-              <TabsContent value="product">
-                <FloristProducts />
-              </TabsContent>
+              {!isNaN(floristId) && floristId && (
+                <>
+                  <TabsContent value="photo">
+                    <FloristPhoto />
+                  </TabsContent>
+                  <TabsContent value="product">
+                    <FloristProducts />
+                  </TabsContent>
+                </>
+              )}
             </Tabs>
           </div>
         </Form>
