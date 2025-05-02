@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import AccreditedStatusList from "@/pages/settings/AccreditedStatus/AccreditedStatusList"
+import RoleList from "@/pages/settings/Role/RoleList"
 import StatusList from "@/pages/settings/Status/StatusList"
 import { useState } from "react"
 import { Separator } from "./ui/separator"
@@ -28,11 +29,20 @@ export default function SettingsForm() {
             >
               Accredited Status
             </Button>
+            <Separator />
+            <Button
+              variant={activeTab === "role" ? "default" : "ghost"}
+              className="justify-start font-normal"
+              onClick={() => setActiveTab("role")}
+            >
+              Role
+            </Button>
           </nav>
         </aside>
         <div className="flex-1 h-full">
           {activeTab === "status" && <StatusList />}
           {activeTab === "accredited_status" && <AccreditedStatusList />}
+          {activeTab === "role" && <RoleList />}
         </div>
       </div>
     </Card>

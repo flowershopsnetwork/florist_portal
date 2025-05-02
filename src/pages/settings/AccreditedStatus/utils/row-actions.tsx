@@ -5,7 +5,6 @@ import {
 import { Status } from "@/shared/interfaces/status.interface";
 import type { Row } from "@tanstack/react-table";
 import { Trash } from "lucide-react";
-import { useState } from "react";
 import { toast } from "sonner";
 import { AccreditedStatusAdd } from "../AccreditedStatusAdd";
 
@@ -15,8 +14,6 @@ interface StatusRowActionsProps {
 }
 
 export function StatusRowActions({ row, refetchaccreditedStatus }: StatusRowActionsProps) {
-  const [editOpen, setEditOpen] = useState(false);
-
   const handleDelete = async () => {
     const id = row.original.id;
     if (id === undefined) {
@@ -38,9 +35,7 @@ export function StatusRowActions({ row, refetchaccreditedStatus }: StatusRowActi
       });
     }
   };
-
-  console.log(editOpen)
-
+  
   return (
     <div className="flex gap-2">
       <AccreditedStatusAdd
@@ -48,7 +43,6 @@ export function StatusRowActions({ row, refetchaccreditedStatus }: StatusRowActi
         accreditedStatus={row.original}
         onSuccess={() => {
           refetchaccreditedStatus();
-          setEditOpen(false);
         }}
         triggerButton={null} 
       />
