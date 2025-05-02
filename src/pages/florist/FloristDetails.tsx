@@ -166,7 +166,7 @@ const FloristDetails = () => {
   );
 
   const filteredProvinces = provinces.filter((province) =>
-    province.name.toLowerCase().includes(searchProvince.toLowerCase())
+    province.name?.toLowerCase().includes(searchProvince.toLowerCase())
   );
 
   return (
@@ -299,7 +299,7 @@ const FloristDetails = () => {
                   <SelectLabel>Select</SelectLabel>
                   {filteredProvinces.length > 0 ? (
                     filteredProvinces.map((item) => (
-                      <SelectItem key={item.id} value={item.id.toString()}>
+                      <SelectItem key={item.id} value={item.id!.toString()}>
                         {item.name}
                       </SelectItem>
                     ))
@@ -444,7 +444,7 @@ const FloristDetails = () => {
                 <SelectGroup>
                   <SelectLabel>Select</SelectLabel>
                   {status.map((item) => (
-                    <SelectItem key={item.id} value={item.id.toString()}>
+                    <SelectItem key={item.id} value={item.id!.toString()}>
                       {item.statusname}
                     </SelectItem>
                   ))}
@@ -470,7 +470,7 @@ const FloristDetails = () => {
                 <SelectGroup>
                   <SelectLabel>Select</SelectLabel>
                   {accreditions.map((item) => (
-                    <SelectItem key={item.id} value={item.id.toString()}>
+                    <SelectItem key={item.id} value={item.id!.toString()}>
                       {item.status}
                     </SelectItem>
                   ))}
