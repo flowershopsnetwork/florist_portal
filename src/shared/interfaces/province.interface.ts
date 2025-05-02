@@ -1,5 +1,5 @@
 export interface Province {
-    id: number;
-    pageid: number;
-    name: string;
+    id?: number;
+    pageid?: number;
+    name?: string;
 };

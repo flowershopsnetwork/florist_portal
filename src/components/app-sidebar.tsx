@@ -55,11 +55,6 @@ const data = {
                     url: "/provinces",
                     icon: MapPinCheck,
                 },
-                {
-                    title: "Statuses",
-                    url: "/statuses",
-                    icon: MapPinCheck,
-                },
             ],
         },
         {

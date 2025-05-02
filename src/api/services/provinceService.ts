@@ -1,6 +1,6 @@
 import { PaginatedResponse } from "@/shared/interfaces/list.interface";
 import { Province } from "@/shared/interfaces/province.interface";
-import { GET } from "../restRequest";
+import { DELETE, GET, POST, PUT } from "../restRequest";
 
 interface ProvinceParams {
     page?: number;
@@ -27,3 +27,20 @@ export const fetchProvinces = (
         }
     );
 };
+
+export const createProvince = (data: Province) => {
+    return POST(`/provinces`, data);
+};
+
+export const fetchProvinceById = (id: number) => {
+    return GET(`/provinces/${id}`);
+};
+
+export const updateProvince = (id: number, data: Partial<Province>) => {
+    return PUT(`/provinces/${id}`, data);
+};
+
+export const deleteProvince = (id: number) => {
+    return DELETE(`/provinces/${id}`);
+};
+

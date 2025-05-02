@@ -2,19 +2,21 @@ import { useContext, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { setToken } from "./api/restRequest";
 import './App.css';
+import NotFound from "./components/not-found";
 import { AppContext } from "./context/AppContext";
 import { MainLayout } from "./layouts/MainLayout";
 import Login from "./pages/authentication/Login";
 import Dashboard from './pages/dashboard/Dashboard';
 import FloristAdd from "./pages/florist/FloristAdd";
 import FloristList from "./pages/florist/FloristList";
+import ProvinceAdd from "./pages/province/ProvinceAdd";
+import ProvinceList from "./pages/province/ProvinceList";
+import Settings from "./pages/settings/Settings";
+import TownAdd from "./pages/town/TownAdd";
+import TownList from "./pages/town/TownList";
+import UserAdd from "./pages/user/UserAdd";
 import UserList from "./pages/user/UserList";
 import PrivateRoute from "./shared/PrivateRoute";
-import NotFound from "./components/not-found";
-import TownList from "./pages/town/TownList";
-import TownAdd from "./pages/town/TownAdd";
-import UserAdd from "./pages/user/UserAdd";
-import Settings from "./pages/settings/Settings";
 
 function App() {
 
@@ -43,6 +45,12 @@ function App() {
               <Route index element={<TownList />} />
               <Route path="create" element={<TownAdd />} />
               <Route path="edit/:id" element={<TownAdd />} />
+            </Route>
+            {/* Province Page */}
+            <Route path="/provinces">
+              <Route index element={<ProvinceList />} />
+              <Route path="create" element={<ProvinceAdd />} />
+              <Route path="edit/:id" element={<ProvinceAdd />} />
             </Route>
             {/* User Page */}
             <Route path="/users">
