@@ -14,6 +14,7 @@ import NotFound from "./components/not-found";
 import TownList from "./pages/town/TownList";
 import TownAdd from "./pages/town/TownAdd";
 import UserAdd from "./pages/user/UserAdd";
+import Settings from "./pages/settings/Settings";
 
 function App() {
 
@@ -48,6 +49,10 @@ function App() {
               <Route index element={<UserList />} />
               <Route path="create" element={<UserAdd />} />
               <Route path="edit/:id" element={<UserAdd />} />
+            </Route>
+            {/* Settings Page */}
+            <Route path="/settings">
+              <Route index element={<Settings />} />
             </Route>
           </Route>
         </Route>

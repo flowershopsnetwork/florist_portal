@@ -1,10 +1,10 @@
 import { createTown, fetchTownById, updateTown } from "@/api/services/townService";
 import {
-    Button,
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
+  Button,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
 } from "@/ComponentModule";
 import { Form, Formik } from "formik";
 import { ArrowLeft, Save } from "lucide-react";

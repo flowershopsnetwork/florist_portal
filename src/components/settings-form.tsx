@@ -1,0 +1,38 @@
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
+import AccreditedStatusList from "@/pages/settings/AccreditedStatus/AccreditedStatusList"
+import StatusList from "@/pages/settings/Status/StatusList"
+import { useState } from "react"
+
+export default function SettingsForm() {
+  const [activeTab, setActiveTab] = useState("status")
+
+  return (
+    <Card className="p-6 h-full">
+      <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0 h-full">
+        <aside className="lg:w-1/5">
+          <nav className="flex flex-col space-y-1">
+            <Button
+              variant={activeTab === "status" ? "default" : "ghost"}
+              className="justify-start font-normal"
+              onClick={() => setActiveTab("status")}
+            >
+              Status
+            </Button>
+            <Button
+              variant={activeTab === "accredited_status" ? "default" : "ghost"}
+              className="justify-start font-normal"
+              onClick={() => setActiveTab("accredited_status")}
+            >
+              Accredited Status
+            </Button>
+          </nav>
+        </aside>
+        <div className="flex-1 h-full">
+          {activeTab === "status" && <StatusList />}
+          {activeTab === "accredited_status" && <AccreditedStatusList />}
+        </div>
+      </div>
+    </Card>
+  )
+}

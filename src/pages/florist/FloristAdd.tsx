@@ -14,8 +14,8 @@ import { toast } from "sonner";
 import * as Yup from "yup";
 import FloristDetails from "./FloristDetails";
 import FloristInfo from "./FloristInfo";
-import FloristProducts from "./FloristProducts";
 import FloristPhoto from "./FloristPhoto";
+import FloristProducts from "./FloristProducts";
 
 const FloristAdd = () => {
   const navigate = useNavigate();
