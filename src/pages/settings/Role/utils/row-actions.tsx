@@ -47,8 +47,7 @@ export function RoleRowActions({ row, refetchRoles }: RoleRowActionsProps) {
         triggerButton={null} 
       />
       <Button size="sm" onClick={handleDelete} variant='outline'>
-        <Trash className="mr-2 h-4 w-4" />
-        Delete
+        <Trash color="#FF2056"/>
       </Button>
     </div>
   );
