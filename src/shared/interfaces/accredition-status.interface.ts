@@ -1,4 +1,4 @@
 export interface AccreditionStatus {
-    id: number;
+    id?: number;
     status?: string;
 };

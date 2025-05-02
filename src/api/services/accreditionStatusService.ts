@@ -1,5 +1,4 @@
 import { AccreditionStatus } from "@/shared/interfaces/accredition-status.interface";
-import { Florist } from "@/shared/interfaces/florist.interface";
 import { PaginatedResponse } from "@/shared/interfaces/list.interface";
 import { DELETE, GET, POST, PUT } from "../restRequest";
 
@@ -29,7 +28,7 @@ export const fetchAccreditionStatuses = (
     );
 };
 
-export const createAccreditionStatuses = (data: Florist) => {
+export const createAccreditionStatuses = (data: AccreditionStatus) => {
     return POST(`/accredited-statuses`, data);
 };
 

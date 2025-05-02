@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card"
 import AccreditedStatusList from "@/pages/settings/AccreditedStatus/AccreditedStatusList"
 import StatusList from "@/pages/settings/Status/StatusList"
 import { useState } from "react"
+import { Separator } from "./ui/separator"
 
 export default function SettingsForm() {
   const [activeTab, setActiveTab] = useState("status")
@@ -19,6 +20,7 @@ export default function SettingsForm() {
             >
               Status
             </Button>
+            <Separator />
             <Button
               variant={activeTab === "accredited_status" ? "default" : "ghost"}
               className="justify-start font-normal"
