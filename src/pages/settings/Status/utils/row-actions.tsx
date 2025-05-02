@@ -39,6 +39,8 @@ export function StatusRowActions({ row, refetchStatus }: StatusRowActionsProps) 
     }
   };
 
+  console.log(editOpen)
+
   return (
     <div className="flex gap-2">
       <StatusAdd
