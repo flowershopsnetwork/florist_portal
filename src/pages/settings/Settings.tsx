@@ -6,7 +6,7 @@ export default function SettingsPage() {
       <div className="h-full space-y-2">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
-          <p className="text-muted-foreground">Manage your account settings and set e-mail preferences.</p>
+          <p className="text-muted-foreground">Manage your account settings and preferences.</p>
         </div>
         <SettingsForm />
       </div>

@@ -1,5 +1,6 @@
 import {
     ClipboardListIcon,
+    Flower,
     HelpCircleIcon,
     LayoutDashboardIcon,
     MapPinCheck,
@@ -54,6 +55,11 @@ const data = {
                     title: "Provinces",
                     url: "/provinces",
                     icon: MapPinCheck,
+                },
+                {
+                    title: "Products",
+                    url: "/products",
+                    icon: Flower,
                 },
             ],
         },

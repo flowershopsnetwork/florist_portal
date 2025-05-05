@@ -1,4 +1,3 @@
-import { GET } from "@/api/restRequest";
 import {
   Avatar,
   AvatarFallback,
@@ -9,8 +8,8 @@ import {
 import { DataTableColumnHeader } from "@/components/table/data-table-column-header";
 import { Florist } from "@/shared/interfaces/florist.interface";
 import type { ColumnDef } from "@tanstack/react-table";
-import { useEffect, useState } from "react";
 import { FloristRowActions } from "./row-actions";
+import { API_CONFIG } from "@/api/apiConfig";
 
 export const floristColumn = (
   refetchFlorists: () => void
@@ -44,45 +43,16 @@ export const floristColumn = (
     ),
     enableSorting: false,
     cell: ({ row }) => {
-      const photoUrl = row.original.photo_url;
-      const [imageSrc, setImageSrc] = useState<string | null>(null);
-
-      useEffect(() => {
-        let objectUrl: string;
-
-        const fetchImage = async () => {
-          try {
-            const res = await GET(`/photo/florists/${photoUrl}`, {
-              responseType: "blob",
-            });
-            const blob = res.data;
-            objectUrl = URL.createObjectURL(blob);
-            setImageSrc(objectUrl);
-          } catch (err) {
-            console.error("Failed to fetch image", err);
-          }
-        };
-
-        if (photoUrl) {
-          fetchImage();
-        }
-
-        return () => {
-          if (objectUrl) URL.revokeObjectURL(objectUrl);
-        };
-      }, [photoUrl]);
-
+      const photoFilename = row.original.photo_url; 
+      const imageUrl = `${API_CONFIG.BASE_URL}/photo/florists/${photoFilename}`;
       return (
         <Avatar>
-          {imageSrc ? (
-            <AvatarImage src={imageSrc} alt="logo" />
-          ) : (
-            <AvatarFallback>🌸</AvatarFallback>
-          )}
+          <AvatarImage src={imageUrl} alt="logo" />
+          <AvatarFallback>🌸</AvatarFallback>
         </Avatar>
       );
     },
-  },
+  },  
   {
     accessorKey: "floristcode",
     header: ({ column }) => (
