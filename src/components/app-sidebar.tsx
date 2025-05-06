@@ -1,14 +1,15 @@
 import {
+    Building2,
+    BuildingIcon,
     ClipboardListIcon,
-    Flower,
+    Flower2,
     HelpCircleIcon,
     LayoutDashboardIcon,
-    MapPinCheck,
     MessageCircle,
     SearchIcon,
     SettingsIcon,
     Store,
-    User
+    Users2
 } from "lucide-react"
 import type * as React from "react"
 import { Link } from "react-router-dom"
@@ -49,17 +50,17 @@ const data = {
                 {
                     title: "Towns",
                     url: "/towns",
-                    icon: MapPinCheck,
+                    icon: Building2,
                 },
                 {
                     title: "Provinces",
                     url: "/provinces",
-                    icon: MapPinCheck,
+                    icon: BuildingIcon,
                 },
                 {
                     title: "Products",
                     url: "/products",
-                    icon: Flower,
+                    icon: Flower2,
                 },
             ],
         },
@@ -69,7 +70,7 @@ const data = {
                 {
                     title: "Users",
                     url: "/users",
-                    icon: User,
+                    icon: Users2,
                 },
                 {
                     title: "Reports",
