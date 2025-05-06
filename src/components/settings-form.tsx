@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import AccreditedStatusList from "@/pages/settings/AccreditedStatus/AccreditedStatusList"
+import Import from "@/pages/settings/Import/Import"
 import RoleList from "@/pages/settings/Role/RoleList"
 import StatusList from "@/pages/settings/Status/StatusList"
 import { useState } from "react"
@@ -37,12 +38,21 @@ export default function SettingsForm() {
             >
               Role
             </Button>
+            <Separator />
+            <Button
+              variant={activeTab === "import" ? "default" : "ghost"}
+              className="justify-start font-normal"
+              onClick={() => setActiveTab("import")}
+            > 
+              Import
+            </Button>
           </nav>
         </aside>
         <div className="flex-1 h-full">
           {activeTab === "status" && <StatusList />}
           {activeTab === "accredited_status" && <AccreditedStatusList />}
           {activeTab === "role" && <RoleList />}
+          {activeTab === "import" && <Import />}
         </div>
       </div>
     </Card>
