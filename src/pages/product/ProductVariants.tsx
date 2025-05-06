@@ -3,7 +3,6 @@ import { Label } from "@/components/ui/label";
 import { useField } from "formik";
 
 const ProductVariants = () => {
-
   const variantGroups = [1, 2, 3].map((num) => ({
     id: useField(`variant${num}id`)[0],
     title: useField(`variant${num}title`)[0],
@@ -15,41 +14,49 @@ const ProductVariants = () => {
   }));
 
   return (
-    <>
-      <div>
-        <h3 className="text-xl font-medium text-gray-500 mb-4">Variants</h3>
-        <div className="space-y-4">
-          {variantGroups.map((variant) => (
-            <div key={variant.key} className="flex flex-wrap gap-4">
-              <div className="flex flex-col w-[120px]">
-                <Label>ID</Label>
-                <Input {...variant.id} />
-              </div>
-              <div className="flex flex-col w-[160px]">
-                <Label>Title</Label>
-                <Input {...variant.title} />
-              </div>
-              <div className="flex flex-col w-[120px]">
-                <Label>SKU</Label>
-                <Input {...variant.sku} />
-              </div>
-              <div className="flex flex-col w-[100px]">
-                <Label>Sale</Label>
-                <Input {...variant.sale} />
-              </div>
-              <div className="flex flex-col w-[100px]">
-                <Label>Price</Label>
-                <Input {...variant.price} />
-              </div>
-              <div className="flex flex-col w-[100px]">
-                <Label>Cost</Label>
-                <Input {...variant.cost} />
-              </div>
-            </div>
-          ))}
+    <div className="space-y-5">
+      <h3 className="text-xl font-medium text-gray-500 mb-4">Product Variants</h3>
+      {variantGroups.map((variant, index) => (
+        <div
+          key={variant.key}
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 rounded-md bg-white border"
+        >
+          <div className="space-y-1">
+            <Label htmlFor={`variant${index + 1}id`}>ID</Label>
+            <Input id={`variant${index + 1}id`} {...variant.id} />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor={`variant${index + 1}title`}>Title</Label>
+            <Input id={`variant${index + 1}title`} {...variant.title} />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor={`variant${index + 1}sku`}>SKU</Label>
+            <Input id={`variant${index + 1}sku`} {...variant.sku} />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor={`variant${index + 1}sale`}>Sale</Label>
+            <Input
+              id={`variant${index + 1}sale`}
+              value={
+                variant.sale.value === true || variant.sale.value === "true"
+                  ? "Yes"
+                  : "No"
+              }
+              readOnly
+              className="bg-gray-100 cursor-not-allowed"
+            />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor={`variant${index + 1}price`}>Price</Label>
+            <Input id={`variant${index + 1}price`} {...variant.price} />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor={`variant${index + 1}cost`}>Cost</Label>
+            <Input id={`variant${index + 1}cost`} {...variant.cost} />
+          </div>
         </div>
-      </div>
-    </>
+      ))}
+    </div>
   );
 };
 

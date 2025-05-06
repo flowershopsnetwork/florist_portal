@@ -16,7 +16,7 @@ const ProductDetails = () => {
   return (
     <>
       <div>
-        <h3 className="text-xl font-medium text-gray-500 mb-4">Basic Info</h3>
+        <h3 className="text-xl font-medium text-gray-500 mb-4">Product Info</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-6">
           <div className="space-y-1">
             <Label>Title</Label>

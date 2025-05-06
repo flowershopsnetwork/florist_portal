@@ -10,8 +10,8 @@ const ProductImages = () => {
   ];
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-semibold mb-4">Product Images</h2>
+    <div className="space-y-5">
+      <h3 className="text-xl font-medium text-gray-500 mb-4">Product Images</h3>
       <div className="flex flex-wrap gap-4">
         {imageFields.map((fieldName) => {
           const [field] = useField(fieldName);
