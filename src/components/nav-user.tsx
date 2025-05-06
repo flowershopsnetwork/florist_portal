@@ -34,7 +34,7 @@ import { API_CONFIG } from "@/api/apiConfig"
 export function NavUser({ user }: {
   user: {
     name: string
-    email: string
+    email?: string
     avatar: string
   }
 }) {
@@ -106,7 +106,7 @@ export function NavUser({ user }: {
             <DropdownMenuSeparator />
 
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem disabled>
                 <UserCircleIcon />
                 Account
               </DropdownMenuItem>

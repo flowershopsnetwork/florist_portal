@@ -18,8 +18,8 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, Sid
 
 const data = {
     user: {
-        name: "Dominic Vega",
-        email: "dominic@example.com",
+        name: "Administrator",
+        // email: "dominic@example.com",
         avatar: "/avatars/shadcn.jpg",
     },
     navGroups: [
