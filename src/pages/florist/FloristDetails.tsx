@@ -2,7 +2,7 @@ import { fetchAccreditionStatuses } from "@/api/services/accreditionStatusServic
 import { fetchCollections } from "@/api/services/collectionService";
 import { fetchProvinces } from "@/api/services/provinceService";
 import { fetchStatuses } from "@/api/services/statusService";
-import { fetchTownById, fetchTowns } from "@/api/services/townService";
+import { fetchTowns } from "@/api/services/townService";
 import { fetchFloristReps } from "@/api/services/userService";
 import {
   Input,
@@ -28,20 +28,21 @@ import { useEffect, useState } from "react";
 
 const FloristDetails = () => {
   const { setFieldValue } = useFormikContext();
-  const [status, setStatus] = useState<Status[]>([]);
-  const [floristRep, setFloristRep] = useState<User[]>([]);
 
   const [cities, setCities] = useState<Town[]>([]);
-  const [city, setCity] = useState<Town | null>(null);
   const [searchCity, setSearchCity] = useState<string>("");
-  const debouncedSearch = useDebounce(searchCity, 300)
+  const debouncedCitySearch = useDebounce(searchCity, 300);
   const filteredCities = cities;
 
   const [provinces, setProvinces] = useState<Province[]>([]);
+  const [searchProvince, setSearchProvince] = useState<string>("");
+  const debouncedSearchProvince = useDebounce(searchProvince, 300);
+  const filteredProvinces = provinces;
+
+  const [status, setStatus] = useState<Status[]>([]);
+  const [floristRep, setFloristRep] = useState<User[]>([]);
   const [accreditions, setAccreditions] = useState<AccreditionStatus[]>([]);
   const [collections, setCollections] = useState<Collection[]>([]);
-  const [searchProvince, setSearchProvince] = useState<string>("");
-  
 
   const [floristNameField, floristNameMeta] = useField("floristname");
   const [contactNumberField, contactNumberMeta] = useField("contactnumber");
@@ -59,13 +60,8 @@ const FloristDetails = () => {
   const [metaDescriptionField] = useField("meta_description");
   const [descriptionField] = useField("description");
   const [accreditionStatusField] = useField("accredition_status");
-
-  
-
-  
-
-  
-
+  const [cityNameField] = useField("city_name");
+  const [provinceNameField] = useField("province_name");
 
   useEffect(() => {
     const fetchStatus = async () => {
@@ -111,7 +107,7 @@ const FloristDetails = () => {
           per_page: 20,
           sort: "name",
           order: "asc",
-          search: debouncedSearch,
+          search: debouncedCitySearch,
         });
         setCities(res.data);
       } catch (error) {
@@ -119,41 +115,25 @@ const FloristDetails = () => {
       }
     };
     fetchCities();
-  }, [debouncedSearch]);
+  }, [debouncedCitySearch]);
 
   useEffect(() => {
-    const fetchCityById = async () => {
-      const cityId = cityField.value;
-      if (!cityId || isNaN(cityId)) return;
-      try {
-        const res = await fetchTownById(cityId);
-        setCity(res.data);
-      } catch (error) {
-        console.error("Failed to fetch city by ID", error);
-      }
-    };
-    fetchCityById();
-  }, [cityField.value]);
-
-
-
-  useEffect(() => {
-    const fetchData = async () => {
+    const fetchProvincesData = async () => {
       try {
         const res = await fetchProvinces({
           page: 0,
-          per_page: 10000,
+          per_page: 20,
           sort: "name",
           order: "asc",
-          search: "",
+          search: debouncedSearchProvince,
         });
         setProvinces(res.data);
       } catch (error) {
         console.error(error);
       }
     };
-    fetchData();
-  }, []);
+    fetchProvincesData();
+  }, [debouncedSearchProvince]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -191,12 +171,6 @@ const FloristDetails = () => {
     fetchData();
   }, []);
 
-
-
-  const filteredProvinces = provinces.filter((province) =>
-    province.name?.toLowerCase().includes(searchProvince.toLowerCase())
-  );
-
   return (
     <div className="mt-5 space-y-8">
       <div>
@@ -206,10 +180,13 @@ const FloristDetails = () => {
             <Label htmlFor="floristname">Florist Name</Label>
             <Input
               {...floristNameField}
-              className={`border p-2 w-full mt-1 ${floristNameMeta.touched && floristNameMeta.error
+              id="floristname"
+              name="floristname"
+              className={`border p-2 w-full mt-1 ${
+                floristNameMeta.touched && floristNameMeta.error
                   ? "border-red-500"
                   : "border-gray-300"
-                }`}
+              }`}
             />
             <ErrorMessage
               name="floristname"
@@ -222,10 +199,13 @@ const FloristDetails = () => {
             <Label htmlFor="contactnumber">Contact</Label>
             <Input
               {...contactNumberField}
-              className={`border p-2 w-full mt-1 ${contactNumberMeta.touched && contactNumberMeta.error
+              id="contactnumber"
+              name="contactnumber"
+              className={`border p-2 w-full mt-1 ${
+                contactNumberMeta.touched && contactNumberMeta.error
                   ? "border-red-500"
                   : "border-gray-300"
-                }`}
+              }`}
             />
             <ErrorMessage
               name="contactnumber"
@@ -233,14 +213,18 @@ const FloristDetails = () => {
               className="text-red-500 text-sm mt-1 italic"
             />
           </div>
+
           <div className="space-y-1">
             <Label htmlFor="address">Address</Label>
             <Input
               {...addressField}
-              className={`border p-2 w-full mt-1 ${addressMeta.touched && addressMeta.error
+              id="address"
+              name="address"
+              className={`border p-2 w-full mt-1 ${
+                addressMeta.touched && addressMeta.error
                   ? "border-red-500"
                   : "border-gray-300"
-                }`}
+              }`}
             />
             <ErrorMessage
               name="address"
@@ -248,6 +232,7 @@ const FloristDetails = () => {
               className="text-red-500 text-sm mt-1 italic"
             />
           </div>
+
           <div className="space-y-1">
             <Label htmlFor="city">City</Label>
             <Select
@@ -255,11 +240,16 @@ const FloristDetails = () => {
               value={cityField.value}
             >
               <SelectTrigger
-                className={`w-full p-2 mt-1 border ${cityMeta.touched && cityMeta.error ? "border-red-500" : "border-gray-300"
-                  }`}
+                id="city"
+                name="city"
+                className={`w-full p-2 mt-1 border ${
+                  cityMeta.touched && cityMeta.error
+                    ? "border-red-500"
+                    : "border-gray-300"
+                }`}
               >
                 <SelectValue placeholder="City">
-                  {city?.name || "City"}
+                  {cityNameField.value || "City"}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
@@ -295,6 +285,7 @@ const FloristDetails = () => {
               className="text-red-500 text-sm mt-1 italic"
             />
           </div>
+
           <div className="space-y-1">
             <Label htmlFor="province">Province</Label>
             <Select
@@ -302,12 +293,17 @@ const FloristDetails = () => {
               value={provinceField.value}
             >
               <SelectTrigger
-                className={`w-full p-2 mt-1 border ${provinceMeta.touched && provinceMeta.error
+                id="province"
+                name="province"
+                className={`w-full p-2 mt-1 border ${
+                  provinceMeta.touched && provinceMeta.error
                     ? "border-red-500"
                     : "border-gray-300"
-                  }`}
+                }`}
               >
-                <SelectValue placeholder="Province" />
+                <SelectValue placeholder="Province">
+                  {provinceNameField.value || "Province"}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <div className="p-2">
@@ -340,14 +336,18 @@ const FloristDetails = () => {
               className="text-red-500 text-sm mt-1 italic"
             />
           </div>
+
           <div className="space-y-1">
             <Label htmlFor="postcode">Post Code</Label>
             <Input
               {...postcodeField}
-              className={`border p-2 w-full mt-1 ${postcodeMeta.touched && postcodeMeta.error
+              id="postcode"
+              name="postcode"
+              className={`border p-2 w-full mt-1 ${
+                postcodeMeta.touched && postcodeMeta.error
                   ? "border-red-500"
                   : "border-gray-300"
-                }`}
+              }`}
             />
             <ErrorMessage
               name="postcode"
@@ -367,7 +367,7 @@ const FloristDetails = () => {
               onValueChange={(value) => setFieldValue("website", value)}
               value={websiteField.value}
             >
-              <SelectTrigger className="w-full">
+              <SelectTrigger id="website" name="website" className="w-full">
                 <SelectValue placeholder="Website" />
               </SelectTrigger>
               <SelectContent>
@@ -379,20 +379,28 @@ const FloristDetails = () => {
               </SelectContent>
             </Select>
           </div>
+
           <div className="space-y-1">
             <Label htmlFor="socialmedia">Social Media</Label>
             <Input
               {...socialMediaField}
+              id="socialmedia"
+              name="socialmedia"
               placeholder="e.g., https://www.facebook.com/florist"
             />
           </div>
+
           <div className="space-y-1">
             <Label htmlFor="collection">Collection</Label>
             <Select
               onValueChange={(value) => setFieldValue("collection", value)}
               value={collectionField.value}
             >
-              <SelectTrigger className="w-full">
+              <SelectTrigger
+                id="collection"
+                name="collection"
+                className="w-full"
+              >
                 <SelectValue placeholder="Collection" />
               </SelectTrigger>
               <SelectContent>
@@ -410,7 +418,6 @@ const FloristDetails = () => {
         </div>
       </div>
 
-      {/* Other Info Section */}
       <div>
         <h3 className="text-xl font-medium text-gray-500 mb-4">Other Info</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
@@ -421,10 +428,13 @@ const FloristDetails = () => {
               value={floristRepField.value}
             >
               <SelectTrigger
-                className={`w-full p-2 mt-1 border ${floristRepMeta.touched && floristRepMeta.error
+                id="floristrep"
+                name="floristrep"
+                className={`w-full p-2 mt-1 border ${
+                  floristRepMeta.touched && floristRepMeta.error
                     ? "border-red-500"
                     : "border-gray-300"
-                  }`}
+                }`}
               >
                 <SelectValue placeholder="Florist Representative" />
               </SelectTrigger>
@@ -453,10 +463,13 @@ const FloristDetails = () => {
               value={statusField.value}
             >
               <SelectTrigger
-                className={`w-full p-2 mt-1 border ${statusMeta.touched && statusMeta.error
+                id="status"
+                name="status"
+                className={`w-full p-2 mt-1 border ${
+                  statusMeta.touched && statusMeta.error
                     ? "border-red-500"
                     : "border-gray-300"
-                  }`}
+                }`}
               >
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
@@ -477,13 +490,20 @@ const FloristDetails = () => {
               className="text-red-500 text-sm mt-1 italic"
             />
           </div>
+
           <div className="space-y-1">
             <Label htmlFor="accredition_status">Accredited Status</Label>
             <Select
-              onValueChange={(value) => setFieldValue("accredition_status", value)}
+              onValueChange={(value) =>
+                setFieldValue("accredition_status", value)
+              }
               value={accreditionStatusField.value}
             >
-              <SelectTrigger className="w-full">
+              <SelectTrigger
+                id="accredition_status"
+                name="accredition_status"
+                className="w-full"
+              >
                 <SelectValue placeholder="Accredited Status" />
               </SelectTrigger>
               <SelectContent>
@@ -498,31 +518,42 @@ const FloristDetails = () => {
               </SelectContent>
             </Select>
           </div>
+
           <div className="space-y-1">
-            <Label htmlFor="shopifygid">Shopify ID</Label>
-            <Input {...shopifyGidField} />
+            <Label htmlFor="shopifygid">Shopify GID</Label>
+            <Input
+              {...shopifyGidField}
+              id="shopifygid"
+              name="shopifygid"
+              disabled
+            />
           </div>
         </div>
       </div>
 
-      {/* Page Info Section */}
       <div>
         <h3 className="text-xl font-medium text-gray-500 mb-4">Page Info</h3>
         <div className="space-y-2 mb-2">
           <Label htmlFor="page_title">Page Title</Label>
-          <Input {...pageTitleField} />
+          <Input {...pageTitleField} id="page_title" name="page_title" />
         </div>
+
         <div className="space-y-2 mb-2">
           <Label htmlFor="meta_description">Meta Description</Label>
           <Textarea
             {...metaDescriptionField}
+            id="meta_description"
+            name="meta_description"
             placeholder="Enter any meta description here..."
           />
         </div>
+
         <div className="space-y-2 mb-2">
           <Label htmlFor="description">Description</Label>
           <Textarea
             {...descriptionField}
+            id="description"
+            name="description"
             placeholder="Enter any additional notes or info here..."
           />
         </div>

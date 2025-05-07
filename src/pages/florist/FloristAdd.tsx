@@ -52,6 +52,8 @@ const FloristAdd = () => {
     description: "",
     accredition_status: "",
     floristcode: "",
+    city_name: "",
+    province_name: ""
   });
 
   const validationSchema = Yup.object({
@@ -71,7 +73,6 @@ const FloristAdd = () => {
       (async () => {
         try {
           const res = await fetchFloristById(floristId);
-          console.log(res)
           const sanitized = {
             ...initialValues,
             ...Object.fromEntries(
