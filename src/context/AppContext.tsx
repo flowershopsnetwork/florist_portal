@@ -3,7 +3,7 @@ import { User } from "@/shared/interfaces/user.interface";
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
-interface AppContextType {
+export interface AppContextType {
     token: string | undefined;
     setToken: React.Dispatch<React.SetStateAction<string | undefined>>;
     user: User | null;
@@ -17,7 +17,7 @@ interface AppProviderProps {
 }
 
 export default function AppProvider({ children }: AppProviderProps) {
-    const [cookies] = useCookies(['token']);
+    const [cookies, setCookie, removeCookie] = useCookies(['token']);
     const [token, setToken] = useState<string | undefined>(cookies.token);
     const [user, setUser] = useState<User | null>(null); 
 
@@ -27,7 +27,7 @@ export default function AppProvider({ children }: AppProviderProps) {
 
     async function getUser() {
         try {
-            const res = await fetch(`${API_CONFIG.BASE_URL}/users`, {
+            const res = await fetch(`${API_CONFIG.BASE_URL}/verify`, {
                 headers: {
                     Authorization: `Bearer ${cookies.token}`,
                 },
@@ -37,9 +37,11 @@ export default function AppProvider({ children }: AppProviderProps) {
             if (res.ok) {
                 setUser(data);
             } else {
+                removeCookie('token', { path: '/' });
                 setUser(null);
             }
         } catch {
+            removeCookie('token', { path: '/' });
             setUser(null);
         }
     }
@@ -58,4 +60,3 @@ export default function AppProvider({ children }: AppProviderProps) {
         </AppContext.Provider>
     );
 }
-

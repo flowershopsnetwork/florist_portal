@@ -11,18 +11,13 @@ import {
     Store,
     Users2
 } from "lucide-react"
-import type * as React from "react"
+import * as React from "react"
 import { Link } from "react-router-dom"
 import { NavUser } from "./nav-user"
 import { NavMain } from "./nav.main"
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar"
 
 const data = {
-    user: {
-        name: "Administrator",
-        // email: "dominic@example.com",
-        avatar: "/avatars/shadcn.jpg",
-    },
     navGroups: [
         {
             label: "Main",
@@ -120,7 +115,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <NavMain groups={data.navGroups} />
             </SidebarContent>
             <SidebarFooter>
-                <NavUser user={data.user} />
+                <NavUser/>
             </SidebarFooter>
         </Sidebar>
     )
