@@ -51,6 +51,7 @@ const FloristAdd = () => {
     meta_description: "",
     description: "",
     accredition_status: "",
+    floristcode: "",
   });
 
   const validationSchema = Yup.object({
@@ -70,6 +71,7 @@ const FloristAdd = () => {
       (async () => {
         try {
           const res = await fetchFloristById(floristId);
+          console.log(res)
           const sanitized = {
             ...initialValues,
             ...Object.fromEntries(
@@ -127,12 +129,17 @@ const FloristAdd = () => {
         <Form>
           <div className="p-5">
             <div className="flex justify-between items-center mb-2">
-              <Link to="/florists">
-                <Button type="button">
-                  <ArrowLeft className="mr-2" />
-                  Back
-                </Button>
-              </Link>
+              <div className="flex items-center gap-5">
+                <Link to="/florists">
+                  <Button type="button">
+                    <ArrowLeft className="mr-2" />
+                    Back
+                  </Button>
+                </Link>
+                <h3 className="text-xl font-medium text-black">
+                  {initialValues.floristcode && initialValues.floristcode}
+                </h3>
+              </div>
               <Button
                 type="button"
                 onClick={() => formik.submitForm()}

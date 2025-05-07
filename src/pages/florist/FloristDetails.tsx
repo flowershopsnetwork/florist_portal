@@ -2,7 +2,7 @@ import { fetchAccreditionStatuses } from "@/api/services/accreditionStatusServic
 import { fetchCollections } from "@/api/services/collectionService";
 import { fetchProvinces } from "@/api/services/provinceService";
 import { fetchStatuses } from "@/api/services/statusService";
-import { fetchTowns } from "@/api/services/townService";
+import { fetchTownById, fetchTowns } from "@/api/services/townService";
 import { fetchFloristReps } from "@/api/services/userService";
 import {
   Input,
@@ -16,6 +16,7 @@ import {
   SelectValue,
   Textarea,
 } from "@/ComponentModule";
+import { useDebounce } from "@/hooks/useDebounce";
 import { AccreditionStatus } from "@/shared/interfaces/accredition-status.interface";
 import { Collection } from "@/shared/interfaces/collection.interface";
 import { Province } from "@/shared/interfaces/province.interface";
@@ -29,12 +30,18 @@ const FloristDetails = () => {
   const { setFieldValue } = useFormikContext();
   const [status, setStatus] = useState<Status[]>([]);
   const [floristRep, setFloristRep] = useState<User[]>([]);
+
   const [cities, setCities] = useState<Town[]>([]);
+  const [city, setCity] = useState<Town | null>(null);
+  const [searchCity, setSearchCity] = useState<string>("");
+  const debouncedSearch = useDebounce(searchCity, 300)
+  const filteredCities = cities;
+
   const [provinces, setProvinces] = useState<Province[]>([]);
   const [accreditions, setAccreditions] = useState<AccreditionStatus[]>([]);
   const [collections, setCollections] = useState<Collection[]>([]);
-  const [searchCity, setSearchCity] = useState<string>("");
   const [searchProvince, setSearchProvince] = useState<string>("");
+  
 
   const [floristNameField, floristNameMeta] = useField("floristname");
   const [contactNumberField, contactNumberMeta] = useField("contactnumber");
@@ -52,6 +59,13 @@ const FloristDetails = () => {
   const [metaDescriptionField] = useField("meta_description");
   const [descriptionField] = useField("description");
   const [accreditionStatusField] = useField("accredition_status");
+
+  
+
+  
+
+  
+
 
   useEffect(() => {
     const fetchStatus = async () => {
@@ -94,10 +108,10 @@ const FloristDetails = () => {
       try {
         const res = await fetchTowns({
           page: 0,
-          per_page: 10000,
+          per_page: 20,
           sort: "name",
           order: "asc",
-          search: "",
+          search: debouncedSearch,
         });
         setCities(res.data);
       } catch (error) {
@@ -105,7 +119,23 @@ const FloristDetails = () => {
       }
     };
     fetchCities();
-  }, []);
+  }, [debouncedSearch]);
+
+  useEffect(() => {
+    const fetchCityById = async () => {
+      const cityId = cityField.value;
+      if (!cityId || isNaN(cityId)) return;
+      try {
+        const res = await fetchTownById(cityId);
+        setCity(res.data);
+      } catch (error) {
+        console.error("Failed to fetch city by ID", error);
+      }
+    };
+    fetchCityById();
+  }, [cityField.value]);
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -161,9 +191,7 @@ const FloristDetails = () => {
     fetchData();
   }, []);
 
-  const filteredCities = cities.filter((city) =>
-    city.name?.toLowerCase().includes(searchCity.toLowerCase())
-  );
+
 
   const filteredProvinces = provinces.filter((province) =>
     province.name?.toLowerCase().includes(searchProvince.toLowerCase())
@@ -178,11 +206,10 @@ const FloristDetails = () => {
             <Label htmlFor="floristname">Florist Name</Label>
             <Input
               {...floristNameField}
-              className={`border p-2 w-full mt-1 ${
-                floristNameMeta.touched && floristNameMeta.error
+              className={`border p-2 w-full mt-1 ${floristNameMeta.touched && floristNameMeta.error
                   ? "border-red-500"
                   : "border-gray-300"
-              }`}
+                }`}
             />
             <ErrorMessage
               name="floristname"
@@ -195,11 +222,10 @@ const FloristDetails = () => {
             <Label htmlFor="contactnumber">Contact</Label>
             <Input
               {...contactNumberField}
-              className={`border p-2 w-full mt-1 ${
-                contactNumberMeta.touched && contactNumberMeta.error
+              className={`border p-2 w-full mt-1 ${contactNumberMeta.touched && contactNumberMeta.error
                   ? "border-red-500"
                   : "border-gray-300"
-              }`}
+                }`}
             />
             <ErrorMessage
               name="contactnumber"
@@ -211,11 +237,10 @@ const FloristDetails = () => {
             <Label htmlFor="address">Address</Label>
             <Input
               {...addressField}
-              className={`border p-2 w-full mt-1 ${
-                addressMeta.touched && addressMeta.error
+              className={`border p-2 w-full mt-1 ${addressMeta.touched && addressMeta.error
                   ? "border-red-500"
                   : "border-gray-300"
-              }`}
+                }`}
             />
             <ErrorMessage
               name="address"
@@ -230,13 +255,12 @@ const FloristDetails = () => {
               value={cityField.value}
             >
               <SelectTrigger
-                className={`w-full p-2 mt-1 border ${
-                  cityMeta.touched && cityMeta.error
-                    ? "border-red-500"
-                    : "border-gray-300"
-                }`}
+                className={`w-full p-2 mt-1 border ${cityMeta.touched && cityMeta.error ? "border-red-500" : "border-gray-300"
+                  }`}
               >
-                <SelectValue placeholder="City" />
+                <SelectValue placeholder="City">
+                  {city?.name || "City"}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <div className="p-2">
@@ -250,15 +274,15 @@ const FloristDetails = () => {
                 <SelectGroup>
                   <SelectLabel>Select</SelectLabel>
                   {filteredCities.length > 0 ? (
-                    filteredCities
-                      .filter((item) => item.id !== undefined)
-                      .map((item) => (
-                        <SelectItem key={item.id} value={item.id!.toString()}>
+                    filteredCities.map((item) =>
+                      item.id ? (
+                        <SelectItem key={item.id} value={item.id.toString()}>
                           {item.name}
                         </SelectItem>
-                      ))
+                      ) : null
+                    )
                   ) : (
-                    <SelectItem value="No cities found" disabled>
+                    <SelectItem value="no-cities" disabled>
                       No cities found
                     </SelectItem>
                   )}
@@ -278,11 +302,10 @@ const FloristDetails = () => {
               value={provinceField.value}
             >
               <SelectTrigger
-                className={`w-full p-2 mt-1 border ${
-                  provinceMeta.touched && provinceMeta.error
+                className={`w-full p-2 mt-1 border ${provinceMeta.touched && provinceMeta.error
                     ? "border-red-500"
                     : "border-gray-300"
-                }`}
+                  }`}
               >
                 <SelectValue placeholder="Province" />
               </SelectTrigger>
@@ -321,11 +344,10 @@ const FloristDetails = () => {
             <Label htmlFor="postcode">Post Code</Label>
             <Input
               {...postcodeField}
-              className={`border p-2 w-full mt-1 ${
-                postcodeMeta.touched && postcodeMeta.error
+              className={`border p-2 w-full mt-1 ${postcodeMeta.touched && postcodeMeta.error
                   ? "border-red-500"
                   : "border-gray-300"
-              }`}
+                }`}
             />
             <ErrorMessage
               name="postcode"
@@ -399,11 +421,10 @@ const FloristDetails = () => {
               value={floristRepField.value}
             >
               <SelectTrigger
-                className={`w-full p-2 mt-1 border ${
-                  floristRepMeta.touched && floristRepMeta.error
+                className={`w-full p-2 mt-1 border ${floristRepMeta.touched && floristRepMeta.error
                     ? "border-red-500"
                     : "border-gray-300"
-                }`}
+                  }`}
               >
                 <SelectValue placeholder="Florist Representative" />
               </SelectTrigger>
@@ -432,11 +453,10 @@ const FloristDetails = () => {
               value={statusField.value}
             >
               <SelectTrigger
-                className={`w-full p-2 mt-1 border ${
-                  statusMeta.touched && statusMeta.error
+                className={`w-full p-2 mt-1 border ${statusMeta.touched && statusMeta.error
                     ? "border-red-500"
                     : "border-gray-300"
-                }`}
+                  }`}
               >
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
