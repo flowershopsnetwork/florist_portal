@@ -1,8 +1,7 @@
 import { deleteTown } from "@/api/services/townService";
 import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/ComponentModule";
 import type { Row } from "@tanstack/react-table";
-import { MoreHorizontal, Pen, Trash } from "lucide-react";
-import { Link } from "react-router-dom";
+import { MoreHorizontal, Trash } from "lucide-react";
 import { toast } from "sonner";
 
 interface TownRowActionsProps {
@@ -37,12 +36,12 @@ export function TownRowActions({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <Link to={`/towns/edit/${row.original.id}`}>
+        {/* <Link to={`/towns/edit/${row.original.id}`}>
           <DropdownMenuItem>
             <Pen className="mr-2 h-4 w-4" />
             Edit
           </DropdownMenuItem>
-        </Link>
+        </Link> */}
         <DropdownMenuItem onClick={handleDelete}>
           <Trash className="mr-2 h-4 w-4" />
           Delete

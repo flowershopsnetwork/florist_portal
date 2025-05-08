@@ -1,8 +1,7 @@
 import { deleteProvince } from "@/api/services/provinceService";
 import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/ComponentModule";
 import type { Row } from "@tanstack/react-table";
-import { MoreHorizontal, Pen, Trash } from "lucide-react";
-import { Link } from "react-router-dom";
+import { MoreHorizontal, Trash } from "lucide-react";
 import { toast } from "sonner";
 
 interface ProvinceRowActionsProps {
@@ -37,12 +36,12 @@ export function ProvinceRowActions({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <Link to={`/provinces/edit/${row.original.id}`}>
+        {/* <Link to={`/provinces/edit/${row.original.id}`}>
           <DropdownMenuItem>
             <Pen className="mr-2 h-4 w-4" />
             Edit
           </DropdownMenuItem>
-        </Link>
+        </Link> */}
         <DropdownMenuItem onClick={handleDelete}>
           <Trash className="mr-2 h-4 w-4" />
           Delete

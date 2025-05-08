@@ -10,11 +10,12 @@ import { Florist } from "@/shared/interfaces/florist.interface"
 import { SortingState } from "@tanstack/react-table"
 import { Plus } from "lucide-react"
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { floristColumn } from "./utils/column"
 import { floristFilters } from "./utils/filter"
 
 const FloristList = () => {
+    const navigate = useNavigate()
     const [data, setData] = useState<Florist[]>([])
     const [total, setTotal] = useState<number>(0)
     const [pageIndex, setPageIndex] = useState<number>(0)
@@ -34,6 +35,10 @@ const FloristList = () => {
     const [provinceOptions, setProvinceOptions] = useState<{ label: string; value: string }[]>([])
     const [statusOptions, setStatusOptions] = useState<{ label: string; value: string }[]>([])
     const [floristRepOptions, setFloristRepOptions] = useState<{ label: string; value: string }[]>([]) 
+
+    const handleRowClick = (florist: Florist) => {
+        navigate(`/florists/edit/${florist.id}`) 
+    }
 
     const fetchData = async () => {
         const sortField = sorting[0]?.id
@@ -207,6 +212,7 @@ const FloristList = () => {
                 onSearchChange={setSearchValue}
                 onFilterChange={handleFilterChange}
                 onResetFilters={handleResetFilters}
+                onRowClick={handleRowClick}
             />
         </div>
     )
