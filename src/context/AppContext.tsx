@@ -17,7 +17,7 @@ interface AppProviderProps {
 }
 
 export default function AppProvider({ children }: AppProviderProps) {
-    const [cookies, setCookie, removeCookie] = useCookies(['token']);
+    const [cookies, removeCookie] = useCookies(['token']);
     const [token, setToken] = useState<string | undefined>(cookies.token);
     const [user, setUser] = useState<User | null>(null); 
 
