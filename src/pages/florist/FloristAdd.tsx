@@ -1,4 +1,8 @@
-import { createFlorist, fetchFloristById, updateFlorist } from "@/api/services/floristService";
+import {
+  createFlorist,
+  fetchFloristById,
+  updateFlorist,
+} from "@/api/services/floristService";
 import {
   Button,
   Tabs,
@@ -19,8 +23,8 @@ import FloristProducts from "./FloristProducts";
 
 const FloristAdd = () => {
   const navigate = useNavigate();
-  const { id } = useParams(); 
-  const floristId = Number(id);  
+  const { id } = useParams();
+  const floristId = Number(id);
 
   const [initialValues, setInitialValues] = useState({
     floristname: "",
@@ -53,11 +57,13 @@ const FloristAdd = () => {
     accredition_status: "",
     floristcode: "",
     city_name: "",
-    province_name: ""
+    province_name: "",
   });
 
   const validationSchema = Yup.object({
-    floristname: Yup.string().required("Florist name is required"),
+    floristname: Yup.string()
+      .required("Florist name is required")
+      .min(3, "Florist name must be at least 3 characters long"),
     contactnumber: Yup.string().required("Contact number is required"),
     address: Yup.string().required("Address is required"),
     city: Yup.string().required("City is required"),
@@ -69,17 +75,14 @@ const FloristAdd = () => {
   });
 
   useEffect(() => {
-    if (id && !isNaN(floristId)) {  
+    if (id && !isNaN(floristId)) {
       (async () => {
         try {
           const res = await fetchFloristById(floristId);
           const sanitized = {
             ...initialValues,
             ...Object.fromEntries(
-              Object.entries(res.data).map(([key, value]) => [
-                key,
-                value ?? "",
-              ])
+              Object.entries(res.data).map(([key, value]) => [key, value ?? ""])
             ),
           };
           setInitialValues(sanitized);
@@ -121,7 +124,7 @@ const FloristAdd = () => {
 
   return (
     <Formik
-      enableReinitialize 
+      enableReinitialize
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
@@ -141,16 +144,17 @@ const FloristAdd = () => {
                   {initialValues.floristcode && initialValues.floristcode}
                 </h3>
               </div>
-              <Button
-                type="button"
-                onClick={() => formik.submitForm()}
-              >
+              <Button type="button" onClick={() => formik.submitForm()}>
                 <Save />
                 Save
               </Button>
             </div>
             <Tabs defaultValue="detail">
-              <TabsList className={`grid ${floristId ? 'grid-cols-4' : 'grid-cols-2'} w-full md:w-[600px]`}>
+              <TabsList
+                className={`grid ${
+                  floristId ? "grid-cols-4" : "grid-cols-2"
+                } w-full md:w-[600px]`}
+              >
                 <TabsTrigger value="detail">Basic</TabsTrigger>
                 <TabsTrigger value="info">Marketing Info</TabsTrigger>
                 {!isNaN(floristId) && floristId && (
