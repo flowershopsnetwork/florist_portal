@@ -22,8 +22,8 @@ const ProductVariants = () => {
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 rounded-md bg-white border"
         >
           <div className="space-y-1">
-            <Label htmlFor={`variant${index + 1}id`}>ID</Label>
-            <Input id={`variant${index + 1}id`} {...variant.id} />
+            <Label htmlFor={`variant${index + 1}id`}>Shopify GID</Label>
+            <Input id={`variant${index + 1}id`} {...variant.id} disabled/>
           </div>
           <div className="space-y-1">
             <Label htmlFor={`variant${index + 1}title`}>Title</Label>

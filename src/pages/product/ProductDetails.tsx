@@ -48,7 +48,7 @@ const ProductDetails = () => {
           </div>
           <div className="space-y-1">
             <Label>Shopify GID</Label>
-            <Input {...shopifyGidField} />
+            <Input {...shopifyGidField} disabled/>
           </div>
         </div>
       </div>
