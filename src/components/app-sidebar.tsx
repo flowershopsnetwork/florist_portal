@@ -1,4 +1,5 @@
 import {
+    Boxes,
     Building2,
     BuildingIcon,
     ClipboardListIcon,
@@ -33,6 +34,16 @@ const data = {
                     icon: Store,
                 },
                 {
+                    title: "Products",
+                    url: "/products",
+                    icon: Flower2,
+                },
+                {
+                    title: "Collections",
+                    url: "/collections",
+                    icon: Boxes,
+                },
+                {
                     title: "Responses",
                     url: "#",
                     icon: MessageCircle,
@@ -52,11 +63,7 @@ const data = {
                     url: "/provinces",
                     icon: BuildingIcon,
                 },
-                {
-                    title: "Products",
-                    url: "/products",
-                    icon: Flower2,
-                },
+
             ],
         },
         {
@@ -115,7 +122,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <NavMain groups={data.navGroups} />
             </SidebarContent>
             <SidebarFooter>
-                <NavUser/>
+                <NavUser />
             </SidebarFooter>
         </Sidebar>
     )

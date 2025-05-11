@@ -19,6 +19,8 @@ import UserList from "./pages/user/UserList";
 import PrivateRoute from "./shared/PrivateRoute";
 import ProductList from "./pages/product/ProductList";
 import ProductAdd from "./pages/product/ProductAdd";
+import CollectionList from "./pages/collections/CollectionList";
+import CollectionAdd from "./pages/collections/CollectionAdd";
 
 function App() {
 
@@ -53,6 +55,12 @@ function App() {
               <Route index element={<ProvinceList />} />
               <Route path="create" element={<ProvinceAdd />} />
               <Route path="edit/:id" element={<ProvinceAdd />} />
+            </Route>
+            {/* Collection Page */}
+            <Route path="/collections">
+              <Route index element={<CollectionList />} />
+              <Route path="create" element={<CollectionAdd />} />
+              <Route path="edit/:id" element={<CollectionAdd />} />
             </Route>
             {/* Product Page */}
             <Route path="/products">
