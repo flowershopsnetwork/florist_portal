@@ -194,7 +194,7 @@ const FloristDetails = () => {
                 <SelectGroup>
                   <SelectLabel>Select</SelectLabel>
                   {collections.map((item) => (
-                    <SelectItem key={item.id} value={item.id.toString()}>
+                    <SelectItem key={item.id} value={item.id!.toString()}>
                       {item.title}
                     </SelectItem>
                   ))}
