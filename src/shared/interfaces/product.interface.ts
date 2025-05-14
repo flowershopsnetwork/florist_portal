@@ -40,4 +40,6 @@ export interface Product {
     metadescription?: string;
     productid?: string;
     tags?: string;
+    florist_name?: string;
+    floristid?: string;
 }
