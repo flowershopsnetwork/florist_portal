@@ -1,6 +1,7 @@
 import { Florist } from "@/shared/interfaces/florist.interface";
 import { PaginatedResponse } from "@/shared/interfaces/list.interface";
 import { DELETE, GET, POST, PUT } from "../restRequest";
+import { Product } from "@/shared/interfaces/product.interface";
 
 interface FloristParams {
     page?: number;
@@ -50,4 +51,22 @@ export const updateFlorist = (id: number, data: Partial<Florist>) => {
 
 export const deleteFlorist = (id: number) => {
     return DELETE(`/florists/${id}`);
+};
+
+export const fetchFloristProducts = (
+    params: FloristParams, floristId: number
+): Promise<PaginatedResponse<Product>> => {
+    const query = new URLSearchParams();
+
+    if (params.page) query.append("page", String(params.page));
+    if (params.per_page) query.append("per_page", String(params.per_page));
+    if (params.sort) query.append("sort", params.sort);
+    if (params.order) query.append("order", params.order);
+    if (params.search) query.append("search", params.search);
+
+    return GET<PaginatedResponse<Product>>(`/florists/${floristId}/products?${query.toString()}`).then(
+        (res) => {
+            return res.data;
+        }
+    );
 };
