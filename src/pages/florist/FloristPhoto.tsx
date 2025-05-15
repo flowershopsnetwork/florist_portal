@@ -124,7 +124,6 @@
 // export default FloristPhoto;
 
 
-import { API_CONFIG } from "@/api/apiConfig";
 import { POST, PUT } from "@/api/restRequest";
 import { fetchFloristById } from "@/api/services/floristService";
 import { Button } from "@/ComponentModule";
@@ -176,8 +175,7 @@ const FloristPhoto = () => {
           style: { backgroundColor: "#28a745", color: "#fff" },
         });
 
-        // Directly using the image URL instead of fetching the blob
-        const imageUrl = `${API_CONFIG.BASE_URL}/photo/florists/${photoUrl}`;
+        const imageUrl = `${photoUrl}`;
         setImagePreview(imageUrl);
       } else {
         throw new Error("Photo URL not received from the upload.");
@@ -195,8 +193,7 @@ const FloristPhoto = () => {
       try {
         const res = await fetchFloristById(floristId);
         if (res.data.photo_url) {
-          // Directly using the image URL instead of fetching the blob
-          const imageUrl = `${API_CONFIG.BASE_URL}/photo/florists/${res.data.photo_url}`;
+          const imageUrl = res.data.photo_url;
           setImagePreview(imageUrl);
         }
       } catch (error) {

@@ -9,7 +9,6 @@ import { DataTableColumnHeader } from "@/components/table/data-table-column-head
 import { Florist } from "@/shared/interfaces/florist.interface";
 import type { ColumnDef } from "@tanstack/react-table";
 import { FloristRowActions } from "./row-actions";
-import { API_CONFIG } from "@/api/apiConfig";
 
 export const floristColumn = (
   refetchFlorists: () => void
@@ -43,8 +42,7 @@ export const floristColumn = (
     ),
     enableSorting: false,
     cell: ({ row }) => {
-      const photoFilename = row.original.photo_url;
-      const imageUrl = `${API_CONFIG.BASE_URL}/photo/florists/${photoFilename}`;
+      const imageUrl = `${row.original.photo_url}`;
       return (
         <Avatar>
           <AvatarImage src={imageUrl} alt="logo" />
