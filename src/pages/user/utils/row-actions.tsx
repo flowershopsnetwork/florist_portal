@@ -1,8 +1,7 @@
 import { deleteUser } from "@/api/services/userService";
 import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/ComponentModule";
 import type { Row } from "@tanstack/react-table";
-import { MoreHorizontal, Pen, Trash, Unlock } from "lucide-react";
-import { Link } from "react-router-dom";
+import { MoreHorizontal, Trash, Unlock } from "lucide-react";
 import { toast } from "sonner";
 
 interface UserRowActionsProps {
