@@ -16,6 +16,7 @@ import * as Yup from "yup";
 import ProductDetails from "./ProductDetails";
 import ProductImages from "./ProductImages";
 import ProductVariants from "./ProductVariants";
+import ProductFlorist from "./ProductFlorist";
 
 const ProductAdd = () => {
   const navigate = useNavigate();
@@ -139,10 +140,11 @@ const ProductAdd = () => {
               </Button>
             </div>
             <Tabs defaultValue="detail">
-              <TabsList className="grid grid-cols-3 w-full md:w-[600px]">
+              <TabsList className="grid grid-cols-4 w-full md:w-[600px]">
                 <TabsTrigger value="detail">Basic</TabsTrigger>
                 <TabsTrigger value="variant">Variants</TabsTrigger>
                 <TabsTrigger value="images">Images</TabsTrigger>
+                <TabsTrigger value="florist">Florist</TabsTrigger>
               </TabsList>
               <TabsContent value="detail">
                 <ProductDetails />
@@ -152,6 +154,9 @@ const ProductAdd = () => {
               </TabsContent>
               <TabsContent value="images">
                 <ProductImages />
+              </TabsContent>
+              <TabsContent value="florist">
+                <ProductFlorist />
               </TabsContent>
             </Tabs>
           </div>
