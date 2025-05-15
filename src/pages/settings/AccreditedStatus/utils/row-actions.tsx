@@ -1,6 +1,15 @@
 import { deleteAccreditionStatuses } from "@/api/services/accreditionStatusService";
 import {
-  Button
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+  Button,
 } from "@/ComponentModule";
 import { Status } from "@/shared/interfaces/status.interface";
 import type { Row } from "@tanstack/react-table";
@@ -13,7 +22,10 @@ interface StatusRowActionsProps {
   refetchaccreditedStatus: () => void;
 }
 
-export function StatusRowActions({ row, refetchaccreditedStatus }: StatusRowActionsProps) {
+export function StatusRowActions({
+  row,
+  refetchaccreditedStatus,
+}: StatusRowActionsProps) {
   const handleDelete = async () => {
     const id = row.original.id;
     if (id === undefined) {
@@ -35,7 +47,7 @@ export function StatusRowActions({ row, refetchaccreditedStatus }: StatusRowActi
       });
     }
   };
-  
+
   return (
     <div className="flex gap-2">
       <AccreditedStatusAdd
@@ -44,11 +56,27 @@ export function StatusRowActions({ row, refetchaccreditedStatus }: StatusRowActi
         onSuccess={() => {
           refetchaccreditedStatus();
         }}
-        triggerButton={null} 
+        triggerButton={null}
       />
-      <Button size="sm" onClick={handleDelete} variant='outline'>
-        <Trash color="#FF2056"/>
-      </Button>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button size="sm" variant="outline">
+            <Trash color="#FF2056" />
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action will delete the accredited status.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

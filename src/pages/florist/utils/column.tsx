@@ -43,7 +43,7 @@ export const floristColumn = (
     ),
     enableSorting: false,
     cell: ({ row }) => {
-      const photoFilename = row.original.photo_url; 
+      const photoFilename = row.original.photo_url;
       const imageUrl = `${API_CONFIG.BASE_URL}/photo/florists/${photoFilename}`;
       return (
         <Avatar>
@@ -52,7 +52,7 @@ export const floristColumn = (
         </Avatar>
       );
     },
-  },  
+  },
   {
     accessorKey: "floristcode",
     header: ({ column }) => (
@@ -149,7 +149,9 @@ export const floristColumn = (
       <DataTableColumnHeader column={column} title="Actions" />
     ),
     cell: ({ row }) => (
-      <FloristRowActions row={row} refetchFlorists={refetchFlorists} />
+      <div onClick={(e) => e.stopPropagation()}>
+        <FloristRowActions row={row} refetchFlorists={refetchFlorists} />
+      </div>
     ),
   },
 ];

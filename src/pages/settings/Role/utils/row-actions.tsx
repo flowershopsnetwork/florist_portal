@@ -1,6 +1,15 @@
 import { deleteRole } from "@/api/services/roleService";
 import {
-  Button
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+  Button,
 } from "@/ComponentModule";
 import { Role } from "@/shared/interfaces/role.interface";
 import type { Row } from "@tanstack/react-table";
@@ -46,9 +55,25 @@ export function RoleRowActions({ row, refetchRoles }: RoleRowActionsProps) {
         }}
         triggerButton={null} 
       />
-      <Button size="sm" onClick={handleDelete} variant='outline'>
-        <Trash color="#FF2056"/>
-      </Button>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button size="sm" variant="outline">
+            <Trash color="#FF2056" />
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action will delete the role.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

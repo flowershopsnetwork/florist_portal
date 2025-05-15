@@ -1,6 +1,15 @@
 import { deleteStatus } from "@/api/services/statusService";
 import {
-  Button
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+  Button,
 } from "@/ComponentModule";
 import { Status } from "@/shared/interfaces/status.interface";
 import type { Row } from "@tanstack/react-table";
@@ -13,7 +22,10 @@ interface StatusRowActionsProps {
   refetchStatus: () => void;
 }
 
-export function StatusRowActions({ row, refetchStatus }: StatusRowActionsProps) {
+export function StatusRowActions({
+  row,
+  refetchStatus,
+}: StatusRowActionsProps) {
   const handleDelete = async () => {
     const id = row.original.id;
     if (id === undefined) {
@@ -41,14 +53,29 @@ export function StatusRowActions({ row, refetchStatus }: StatusRowActionsProps) 
       <StatusAdd
         mode="edit"
         status={row.original}
-        onSuccess={() => {
-          refetchStatus();
-        }}
-        triggerButton={null} 
+        onSuccess={refetchStatus}
+        triggerButton={null}
       />
-      <Button size="sm" onClick={handleDelete} variant='outline'>
-        <Trash color="#FF2056"/>
-      </Button>
+
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button size="sm" variant="outline">
+            <Trash color="#FF2056" />
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action will delete the status.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
