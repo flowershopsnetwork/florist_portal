@@ -26,7 +26,6 @@ const TownSelect = ({ id }: TownSelectProps) => {
   const [city, setCity] = useState<Town | null>(null);
   const [searchCity, setSearchCity] = useState<string>("");
   const debouncedCitySearch = useDebounce(searchCity, 300);
-  const filteredCities = cities;
 
   useEffect(() => {
     const fetchCities = async () => {
@@ -67,8 +66,8 @@ const TownSelect = ({ id }: TownSelectProps) => {
           <Label htmlFor="city">City</Label>
           {city?.id ? (
             <Select
-              onValueChange={(value) => setFieldValue("city", value)}
-              value={cityField.value || ""}
+              onValueChange={(value) => setFieldValue("city", Number(value))}
+              value={cityField.value?.toString() || ""}
             >
               <SelectTrigger
                 id="city"
@@ -92,14 +91,12 @@ const TownSelect = ({ id }: TownSelectProps) => {
                 </div>
                 <SelectGroup>
                   <SelectLabel>Select</SelectLabel>
-                  {filteredCities.length > 0 ? (
-                    filteredCities.map((item) =>
-                      item.id ? (
-                        <SelectItem key={item.id} value={item.id.toString()}>
-                          {item.name}
-                        </SelectItem>
-                      ) : null
-                    )
+                  {cities.length > 0 ? (
+                    cities.map((item) => (
+                      <SelectItem key={item.id} value={item.id!.toString()}>
+                        {item.name}
+                      </SelectItem>
+                    ))
                   ) : (
                     <SelectItem value="no-cities" disabled>
                       No cities found
@@ -126,6 +123,14 @@ const TownSelect = ({ id }: TownSelectProps) => {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
+                  <div className="p-2">
+                    <Input
+                      type="text"
+                      placeholder="Search cities..."
+                      value={searchCity}
+                      onChange={(e) => setSearchCity(e.target.value)}
+                    />
+                  </div>
                   <SelectLabel>Select</SelectLabel>
                   {cities.length > 0 ? (
                     cities.map((item) => (
@@ -152,8 +157,8 @@ const TownSelect = ({ id }: TownSelectProps) => {
         <div className="space-y-1">
           <Label htmlFor="city">City</Label>
           <Select
-            onValueChange={(value) => setFieldValue("city", value)}
-            value={cityField.value || ""}
+            onValueChange={(value) => setFieldValue("city", Number(value))}
+            value={cityField.value?.toString() || ""}
           >
             <SelectTrigger
               id="city"
@@ -164,7 +169,12 @@ const TownSelect = ({ id }: TownSelectProps) => {
                   : "border-gray-300"
               }`}
             >
-              <SelectValue placeholder="City" />
+              <SelectValue placeholder="City">
+                {cities.find((item) => item.id === Number(cityField.value))
+                  ?.name ||
+                  city?.name ||
+                  ""}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               <div className="p-2">
@@ -177,14 +187,12 @@ const TownSelect = ({ id }: TownSelectProps) => {
               </div>
               <SelectGroup>
                 <SelectLabel>Select</SelectLabel>
-                {filteredCities.length > 0 ? (
-                  filteredCities.map((item) =>
-                    item.id ? (
-                      <SelectItem key={item.id} value={item.id.toString()}>
-                        {item.name}
-                      </SelectItem>
-                    ) : null
-                  )
+                {cities.length > 0 ? (
+                  cities.map((item) => (
+                    <SelectItem key={item.id} value={item.id!.toString()}>
+                      {item.name}
+                    </SelectItem>
+                  ))
                 ) : (
                   <SelectItem value="no-cities" disabled>
                     No cities found

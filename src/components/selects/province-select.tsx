@@ -29,7 +29,6 @@ const ProvinceSelect = ({ id }: ProvinceSelectProps) => {
   const [province, setProvince] = useState<Province | null>(null);
   const [searchProvince, setSearchProvince] = useState<string>("");
   const debouncedSearchProvince = useDebounce(searchProvince, 300);
-  const filteredProvinces = provinces;
 
   useEffect(() => {
     const fetchProvincesData = async () => {
@@ -70,8 +69,10 @@ const ProvinceSelect = ({ id }: ProvinceSelectProps) => {
           <Label htmlFor="province">Province</Label>
           {province?.id ? (
             <Select
-              onValueChange={(value) => setFieldValue("province", value)}
-              value={provinceField.value || ""}
+              onValueChange={(value) =>
+                setFieldValue("province", Number(value))
+              }
+              value={provinceField.value?.toString() || ""}
             >
               <SelectTrigger
                 id="province"
@@ -97,14 +98,12 @@ const ProvinceSelect = ({ id }: ProvinceSelectProps) => {
                 </div>
                 <SelectGroup>
                   <SelectLabel>Select</SelectLabel>
-                  {filteredProvinces.length > 0 ? (
-                    filteredProvinces.map((item) =>
-                      item.id ? (
-                        <SelectItem key={item.id} value={item.id.toString()}>
-                          {item.name}
-                        </SelectItem>
-                      ) : null
-                    )
+                  {provinces.length > 0 ? (
+                    provinces.map((item) => (
+                      <SelectItem key={item.id} value={item.id!.toString()}>
+                        {item.name}
+                      </SelectItem>
+                    ))
                   ) : (
                     <SelectItem value="no-provinces" disabled>
                       No provinces found
@@ -115,7 +114,9 @@ const ProvinceSelect = ({ id }: ProvinceSelectProps) => {
             </Select>
           ) : (
             <Select
-              onValueChange={(value) => setFieldValue("province", Number(value))}
+              onValueChange={(value) =>
+                setFieldValue("province", Number(value))
+              }
               value={provinceField.value?.toString() || ""}
             >
               <SelectTrigger
@@ -127,10 +128,20 @@ const ProvinceSelect = ({ id }: ProvinceSelectProps) => {
                     : "border-gray-300"
                 }`}
               >
-                <SelectValue placeholder="Province">{province?.name || ""}</SelectValue>
+                <SelectValue placeholder="Province">
+                  {province?.name || ""}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
+                  <div className="p-2">
+                    <Input
+                      type="text"
+                      placeholder="Search provinces..."
+                      value={searchProvince}
+                      onChange={(e) => setSearchProvince(e.target.value)}
+                    />
+                  </div>
                   <SelectLabel>Select</SelectLabel>
                   {provinces.length > 0 ? (
                     provinces.map((item) => (
@@ -139,8 +150,8 @@ const ProvinceSelect = ({ id }: ProvinceSelectProps) => {
                       </SelectItem>
                     ))
                   ) : (
-                    <SelectItem value="no-province" disabled>
-                      No province found
+                    <SelectItem value="no-provinces" disabled>
+                      No provinces found
                     </SelectItem>
                   )}
                 </SelectGroup>
@@ -157,8 +168,8 @@ const ProvinceSelect = ({ id }: ProvinceSelectProps) => {
         <div className="space-y-1">
           <Label htmlFor="province">Province</Label>
           <Select
-            onValueChange={(value) => setFieldValue("province", value)}
-            value={provinceField.value || ""}
+            onValueChange={(value) => setFieldValue("province", Number(value))}
+            value={provinceField.value?.toString() || ""}
           >
             <SelectTrigger
               id="province"
@@ -169,7 +180,13 @@ const ProvinceSelect = ({ id }: ProvinceSelectProps) => {
                   : "border-gray-300"
               }`}
             >
-              <SelectValue placeholder="Province" />
+              <SelectValue placeholder="Province">
+                {provinces.find(
+                  (item) => item.id === Number(provinceField.value)
+                )?.name ||
+                  province?.name ||
+                  ""}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               <div className="p-2">
@@ -182,14 +199,12 @@ const ProvinceSelect = ({ id }: ProvinceSelectProps) => {
               </div>
               <SelectGroup>
                 <SelectLabel>Select</SelectLabel>
-                {filteredProvinces.length > 0 ? (
-                  filteredProvinces.map((item) =>
-                    item.id ? (
-                      <SelectItem key={item.id} value={item.id.toString()}>
-                        {item.name}
-                      </SelectItem>
-                    ) : null
-                  )
+                {provinces.length > 0 ? (
+                  provinces.map((item) => (
+                    <SelectItem key={item.id} value={item.id!.toString()}>
+                      {item.name}
+                    </SelectItem>
+                  ))
                 ) : (
                   <SelectItem value="no-provinces" disabled>
                     No provinces found
