@@ -69,7 +69,6 @@ const FloristAdd = () => {
     city: Yup.string().required("City is required"),
     province: Yup.string().required("Province is required"),
     postcode: Yup.string().required("Post Code is required"),
-    floristrep: Yup.string().required("Florist Representative is required"),
     status: Yup.string().required("Status is required"),
     call_outcome: Yup.string().required("Call outcome is required"),
   });

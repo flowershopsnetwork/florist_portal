@@ -12,7 +12,7 @@ import {
 } from "@/ComponentModule";
 import { useDebounce } from "@/hooks/useDebounce";
 import { User } from "@/shared/interfaces/user.interface";
-import { ErrorMessage, useField, useFormikContext } from "formik";
+import { useField, useFormikContext } from "formik";
 import { useEffect, useState } from "react";
 
 interface FloristRepSelectProps {
@@ -21,7 +21,7 @@ interface FloristRepSelectProps {
 
 const FloristRepSelect = ({ id }: FloristRepSelectProps) => {
   const { setFieldValue } = useFormikContext();
-  const [floristRepField, floristRepMeta] = useField("floristrep");
+  const [floristRepField] = useField("floristrep");
   const [users, setUsers] = useState<User[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [searchUser, setSearchUser] = useState<string>("");
@@ -72,11 +72,7 @@ const FloristRepSelect = ({ id }: FloristRepSelectProps) => {
               <SelectTrigger
                 id="floristrep"
                 name="floristrep"
-                className={`w-full p-2 mt-1 border ${
-                  floristRepMeta.touched && floristRepMeta.error
-                    ? "border-red-500"
-                    : "border-gray-300"
-                }`}
+                className="w-full"
               >
                 <SelectValue placeholder="Florist Representative">
                   {user?.username}
@@ -110,31 +106,39 @@ const FloristRepSelect = ({ id }: FloristRepSelectProps) => {
               </SelectContent>
             </Select>
           ) : (
-            <Select>
+            <Select
+              onValueChange={(value) =>
+                setFieldValue("floristrep", Number(value))
+              }
+              value={floristRepField.value?.toString() || ""}
+            >
               <SelectTrigger
-                className={`w-full p-2 mt-1 border ${
-                  floristRepMeta.touched && floristRepMeta.error
-                    ? "border-red-500"
-                    : "border-gray-300"
-                }`}
+                id="floristrep"
+                name="floristrep"
+                className="w-full"
               >
-                <SelectValue placeholder="Florist Representative"></SelectValue>
+                <SelectValue placeholder="Florist Representative">
+                  {user?.username || ""}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Select</SelectLabel>
-                  <SelectItem value="0" disabled>
-                    No results
-                  </SelectItem>
+                  {users.length > 0 ? (
+                    users.map((item) => (
+                      <SelectItem key={item.id} value={item.id!.toString()}>
+                        {item.username}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <SelectItem value="no-floristrep" disabled>
+                      No user found
+                    </SelectItem>
+                  )}
                 </SelectGroup>
               </SelectContent>
             </Select>
           )}
-          <ErrorMessage
-            name="floristrep"
-            component="p"
-            className="text-red-500 text-sm mt-1 italic"
-          />
         </div>
       ) : (
         <div className="space-y-1">
@@ -143,15 +147,7 @@ const FloristRepSelect = ({ id }: FloristRepSelectProps) => {
             onValueChange={(value) => setFieldValue("floristrep", value)}
             value={floristRepField.value}
           >
-            <SelectTrigger
-              id="floristrep"
-              name="floristrep"
-              className={`w-full p-2 mt-1 border ${
-                floristRepMeta.touched && floristRepMeta.error
-                  ? "border-red-500"
-                  : "border-gray-300"
-              }`}
-            >
+            <SelectTrigger id="floristrep" name="floristrep" className="w-full">
               <SelectValue placeholder="Florist Representative" />
             </SelectTrigger>
             <SelectContent>
