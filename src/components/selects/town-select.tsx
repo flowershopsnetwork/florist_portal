@@ -109,22 +109,35 @@ const TownSelect = ({ id }: TownSelectProps) => {
               </SelectContent>
             </Select>
           ) : (
-            <Select>
+            <Select
+              onValueChange={(value) => setFieldValue("city", Number(value))}
+              value={cityField.value?.toString() || ""}
+            >
               <SelectTrigger
+                id="city"
+                name="city"
                 className={`w-full p-2 mt-1 border ${
                   cityMeta.touched && cityMeta.error
                     ? "border-red-500"
                     : "border-gray-300"
                 }`}
               >
-                <SelectValue placeholder="City"></SelectValue>
+                <SelectValue placeholder="City">{city?.name || ""}</SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Select</SelectLabel>
-                  <SelectItem value="0" disabled>
-                    No results
-                  </SelectItem>
+                  {cities.length > 0 ? (
+                    cities.map((item) => (
+                      <SelectItem key={item.id} value={item.id!.toString()}>
+                        {item.name}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <SelectItem value="no-city" disabled>
+                      No city found
+                    </SelectItem>
+                  )}
                 </SelectGroup>
               </SelectContent>
             </Select>

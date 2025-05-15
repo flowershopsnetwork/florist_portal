@@ -114,22 +114,35 @@ const ProvinceSelect = ({ id }: ProvinceSelectProps) => {
               </SelectContent>
             </Select>
           ) : (
-            <Select>
+            <Select
+              onValueChange={(value) => setFieldValue("province", Number(value))}
+              value={provinceField.value?.toString() || ""}
+            >
               <SelectTrigger
+                id="province"
+                name="province"
                 className={`w-full p-2 mt-1 border ${
                   provinceMeta.touched && provinceMeta.error
                     ? "border-red-500"
                     : "border-gray-300"
                 }`}
               >
-                <SelectValue placeholder="Province"></SelectValue>
+                <SelectValue placeholder="Province">{province?.name || ""}</SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Select</SelectLabel>
-                  <SelectItem value="0" disabled>
-                    No results
-                  </SelectItem>
+                  {provinces.length > 0 ? (
+                    provinces.map((item) => (
+                      <SelectItem key={item.id} value={item.id!.toString()}>
+                        {item.name}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <SelectItem value="no-province" disabled>
+                      No province found
+                    </SelectItem>
+                  )}
                 </SelectGroup>
               </SelectContent>
             </Select>
