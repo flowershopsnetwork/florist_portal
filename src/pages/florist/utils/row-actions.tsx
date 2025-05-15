@@ -53,7 +53,7 @@ export function FloristRowActions({
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button variant="ghost" className="w-full">
-              <Trash color="#FF2056" /> Delete
+              <Trash color="#FF2056" className="mr-2 h-4 w-4" /> Delete
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>

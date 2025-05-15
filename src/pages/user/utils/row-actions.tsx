@@ -37,17 +37,11 @@ export function UserRowActions({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <Link to={`/users/edit/${row.original.id}`}>
-          <DropdownMenuItem>
-            <Pen className="mr-2 h-4 w-4" />
-            Edit
-          </DropdownMenuItem>
-        </Link>
-        <DropdownMenuItem>
+        <DropdownMenuItem disabled>
             <Unlock className="mr-2 h-4 w-4" />
             Reset
           </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleDelete}>
+        <DropdownMenuItem onClick={handleDelete} disabled>
           <Trash className="mr-2 h-4 w-4" />
           Delete
         </DropdownMenuItem>
